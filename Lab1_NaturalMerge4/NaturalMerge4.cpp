@@ -6,6 +6,7 @@ bool createFileWithRandomNumbers(const std::string& fileName, const int numbersC
 bool isFileContainsSortedArray(const std::string& fileName);
 void splitFile(const std::string& fileName, std::fstream* F);
 void mergeFile(std::fstream* F, std::fstream* G);
+bool fileIsEmpty(std::fstream* F, std::fstream* G);
 
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
@@ -139,4 +140,30 @@ void mergeFile(std::fstream* F, std::fstream* G) {
         number1[1] = number2[1];
         n = 1 - n;
     }
+}
+
+bool fileIsEmpty(std::fstream* F, std::fstream* G) {
+    F[0].open("F1.txt", std::ios::in);
+    F[1].open("F2.txt", std::ios::in);
+    G[0].open("G1.txt", std::ios::in);
+    G[1].open("G2.txt", std::ios::in);
+
+    if (!G[0] || !G[1] || !F[0] || !F[1]) {
+        std::cerr << "Error in read G1 and G2 (F1 and F2)! ";
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (F[i].peek() == EOF) {
+            F[0].close(); F[1].close(); G[0].close(); G[1].close();
+            return true;
+        }
+        if (G[i].peek() == EOF) {
+            F[0].close(); F[1].close(); G[0].close(); G[1].close();
+            return true;
+        }
+    }
+
+    F[0].close(); F[1].close(); G[0].close(); G[1].close();
+    return false;
 }
