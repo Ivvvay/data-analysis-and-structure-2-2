@@ -7,7 +7,7 @@ bool isFileContainsSortedArray(const std::string& fileName);
 void splitFile(const std::string& fileName, std::fstream* F);
 void mergeFile(std::fstream* F, std::fstream* G);
 bool fileIsEmpty(std::fstream* F, std::fstream* G);
-
+void sortFile(const std::string& fileName);
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
     std::random_device rd;
@@ -166,4 +166,68 @@ bool fileIsEmpty(std::fstream* F, std::fstream* G) {
 
     F[0].close(); F[1].close(); G[0].close(); G[1].close();
     return false;
+}
+
+void sortFile(const std::string& fileName) {
+    std::ifstream file(fileName);
+    if (!file.is_open()) {
+        std::cerr << "Error: File A isn't open" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    ///Split
+    std::fstream F[2];
+    splitFile(fileName, F);
+
+    ///Merge
+    std::fstream G[2];
+    bool flag = false;
+    while (!flag) {
+        F[0].open("F1.txt", std::ios::in);
+        F[1].open("F2.txt", std::ios::in);
+        if (!F[0] || !F[1]) {
+            std::cerr << "Error in create F1 and F2! ";
+            exit(EXIT_FAILURE);
+        }
+        G[0].open("G1.txt", std::ios::out);
+        G[1].open("G2.txt", std::ios::out);
+        if (!G[0] || !G[1]) {
+            std::cerr << "Error in create G1 and G2! ";
+            exit(EXIT_FAILURE);
+        }
+
+        mergeFile(F, G);
+
+        for (int i = 0; i < 2; i++) {
+            F[i].close();
+            G[i].close();
+        }
+
+        if (fileIsEmpty(F, G))
+            break;
+
+        F[0].open("F1.txt", std::ios::out);
+        F[1].open("F2.txt", std::ios::out);
+        if (!F[0] || !F[1]) {
+            std::cerr << "Error in create F1 and F2";
+            exit(EXIT_FAILURE);
+        }
+        G[0].open("G1.txt", std::ios::in);
+        G[1].open("G2.txt", std::ios::in);
+        if (!G[0] || !G[1]) {
+            std::cerr << "Error in create G1 and G2! ";
+            exit(EXIT_FAILURE);
+        }
+
+        mergeFile(G, F);
+
+        for (int i = 0; i < 2; i++) {
+            F[i].close();
+            G[i].close();
+        }
+
+        flag = fileIsEmpty(F, G);
+    }
+    file.close();
+    F[0].close();
+    F[1].close();
 }
