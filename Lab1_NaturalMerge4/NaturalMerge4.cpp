@@ -5,7 +5,7 @@
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue);
 bool isFileContainsSortedArray(const std::string& fileName);
 void splitFile(const std::string& fileName, std::fstream* F);
-
+void mergeFile(std::fstream* F, std::fstream* G);
 
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
@@ -75,4 +75,68 @@ void splitFile(const std::string& fileName, std::fstream* F) {
     file.close();
     F[0].close();
     F[1].close();
+}
+
+void mergeFile(std::fstream* F, std::fstream* G) {
+    if (!F[0].is_open() || !F[1].is_open() || !G[0].is_open() || !G[1].is_open()) {
+        std::cerr << "Error in 'void mergeFile'" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    int number1[2];
+    int number2[2];
+    int n = 0;
+    int k;
+
+    F[0] >> number1[0];
+    F[1] >> number1[1];
+    while (!F[0].eof() && !F[1].eof()) {
+        if (number1[0] < number1[1]) k = 0;
+        else k = 1;
+
+        G[n] << number1[k] << " ";
+        F[k] >> number2[k];
+
+        if (number1[k] <= number2[k])
+            number1[k] = number2[k];
+        else {
+            G[n] << number1[1 - k] << " ";
+            F[1 - k] >> number2[1 - k];
+
+            while (!F[1 - k].eof() && (number1[1 - k] <= number2[1 - k])) {
+                number1[1 - k] = number2[1 - k];
+                G[n] << number1[1 - k] << " ";
+                F[1 - k] >> number2[1 - k];
+            }
+            number1[1 - k] = number2[1 - k];
+            number1[k] = number2[k];
+            n = 1 - n;
+        }
+    }
+
+    while (!F[0].eof()) {
+        G[n] << number1[0] << " ";
+        F[0] >> number2[0];
+
+        while (!F[0].eof() && (number1[0] <= number2[0])) {
+            number1[0] = number2[0];
+            G[n] << number1[0] << " ";
+            F[0] >> number2[0];
+        }
+        number1[0] = number2[0];
+        n = 1 - n;
+    }
+
+    while (!F[1].eof()) {
+        G[n] << number1[1] << " ";
+        F[1] >> number2[1];
+
+        while (!F[1].eof() && (number1[1] <= number2[1])) {
+            number1[1] = number2[1];
+            G[n] << number1[1] << " ";
+            F[1] >> number2[1];
+        }
+        number1[1] = number2[1];
+        n = 1 - n;
+    }
 }
