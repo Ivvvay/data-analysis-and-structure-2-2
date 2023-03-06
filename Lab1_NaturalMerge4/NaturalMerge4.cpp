@@ -1,15 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <random>
-
-bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue);
-bool isFileContainsSortedArray(const std::string& fileName);
-void splitFile(const std::string& fileName, std::fstream* F);
-void mergeFile(std::fstream* F, std::fstream* G);
-bool fileIsEmpty(std::fstream* F, std::fstream* G);
-void sortFile(const std::string& fileName);
-int createAndSortFile(const std::string& fileName, const int numbersCount, const int maxNumberValue);
-void NaturalMerge4();
+#include "NaturalMerge4.h"
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
     std::random_device rd;
