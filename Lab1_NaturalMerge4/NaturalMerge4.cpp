@@ -4,6 +4,8 @@
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue);
 bool isFileContainsSortedArray(const std::string& fileName);
+void splitFile(const std::string& fileName, std::fstream* F);
+
 
 
 bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
@@ -41,4 +43,36 @@ bool isFileContainsSortedArray(const std::string& fileName) {
 
     file.close();
     return true;
+}
+
+void splitFile(const std::string& fileName, std::fstream* F) {
+    std::ifstream file(fileName);
+    F[0].open("F1.txt", std::fstream::out);
+    F[1].open("F2.txt", std::fstream::out);
+
+    if (!F[0].is_open() || !F[1].is_open() || !file.is_open()) {
+        std::cerr << "Error in 'void splitFile'" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    long int number1;
+    long int number2;
+    int n = 0;
+
+    file >> number1;
+    while (!file.eof()) {
+        F[n] << number1 << " ";
+        file >> number2;
+        while (!file.eof() && number1 <= number2) {
+            number1 = number2;
+            F[n] << number1 << " ";
+            file >> number2;
+        }
+        number1 = number2;
+        n = 1 - n;
+    }
+
+    file.close();
+    F[0].close();
+    F[1].close();
 }
