@@ -67,6 +67,7 @@ public:
     void printLeaves() const; //- вывод в консоль листьев дерева;
     void printLeaves(const Node* node) const;
 
+    BinaryTree& operator=(const BinaryTree& other); //- оператор присваивания;
 
 private:
     Node* _root = nullptr;

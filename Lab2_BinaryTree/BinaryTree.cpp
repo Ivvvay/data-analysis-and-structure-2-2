@@ -379,3 +379,12 @@ void BinaryTree::printLeaves(const Node *node) const {
     }
 }
 
+BinaryTree &BinaryTree::operator=(const BinaryTree &other) {
+    if (this != &other) {
+        clear();
+        if (other.getRoot() != nullptr)
+            _root = new Node(*other.getRoot());
+    }
+    return *this;
+}
+
