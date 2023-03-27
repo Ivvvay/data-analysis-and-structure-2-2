@@ -40,6 +40,8 @@ BinaryTree::BinaryTree() : _root(nullptr) {}
 
 BinaryTree::BinaryTree(const BinaryTree &other) : _root(copyTree(other._root)) {}
 
+BinaryTree::BinaryTree(Node* newRoot) : _root(copyTree(newRoot)) {}
+
 BinaryTree::~BinaryTree() {
     clear();
 }
@@ -85,6 +87,20 @@ BinaryTree::Node* BinaryTree::copyTree(Node* node) const {
 
 bool BinaryTree::isEmpty() const {
     return !_root;
+}
+
+BinaryTree BinaryTree::copySubtree(int key) {
+    Node* node = findNodeByKey(key);
+    if (!node)
+        return BinaryTree();
+
+    Node* newRoot = new Node(node->getKey());
+    if (node->getLeftChild())
+        newRoot->setLeftChild(copySubtree(node->getLeftChild()));
+    if (node->getRightChild())
+        newRoot->setRightChild(copySubtree(node->getRightChild()));
+
+    return BinaryTree(newRoot);
 }
 
 BinaryTree::Node* BinaryTree::copySubtree(const Node *node) const {
@@ -238,4 +254,25 @@ BinaryTree::Node* BinaryTree::findParent(Node* node, Node* current) {
 
     parent = findParent(node, current->getRightChild());
     return parent;
+}
+
+bool BinaryTree::isBalanced() {
+    return isBalanced(_root);
+}
+
+bool BinaryTree::isBalanced(const Node *node) {
+    if (node == nullptr)
+        return true;
+
+    int leftHeight = getHeight(node->getLeftChild());
+    int rightHeight = getHeight(node->getRightChild());
+    if (abs(leftHeight - rightHeight) > 1)
+        return false;
+
+    int leftSize = getSize(node->getLeftChild());
+    int rightSize = getSize(node->getRightChild());
+    if (abs(leftSize - rightSize) > 1)
+        return false;
+
+    return isBalanced(node->getLeftChild()) && isBalanced(node->getRightChild());
 }

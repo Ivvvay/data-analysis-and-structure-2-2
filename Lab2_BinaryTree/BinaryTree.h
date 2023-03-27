@@ -23,6 +23,7 @@ public:
     };
     BinaryTree(); //- конструктор (по умолчанию);
     BinaryTree(const BinaryTree& other); //- конструктор (копирования);
+    BinaryTree(Node* newRoot);
     ~BinaryTree(); //- деструктор;
     const Node* getRoot() const;//- получение корня дерева;
     Node* getRoot();
@@ -31,7 +32,9 @@ public:
     void deleteSubtree(int key);//- удаление поддеревьев узла;
     void deleteSubtree(Node* node);
     bool isEmpty() const; //- isEmpty (возвращает true, если дерево пусто);
-    Node* copySubtree(const Node* node) const; //- копирование поддерева узла (возвращает новый объект класса);
+
+    BinaryTree copySubtree(int key); //- копирование поддерева узла (возвращает новый объект класса);
+    Node* copySubtree(const Node* node) const;
     Node* copyTree(Node* node) const;
 
     int getHeight() const; //- получение высоты дерева;
@@ -46,6 +49,8 @@ public:
     Node* findNodeByKey(int key);//- поиск узла по ключу
     Node* findNodeByKey(int key, Node* currentNode);
     Node* findParent(Node* node, Node* current); //- поиск предков
+    bool isBalanced(); //- проверка дерева на сбалансированность (возвращает true, если дерево является сбалансированным:
+    bool isBalanced(const Node* node); //высоты правого и левого поддеревьев отличаются не более, чем на единицу, и сами поддеревья также являются сбалансированными);
 
 
 private:
