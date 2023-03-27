@@ -74,3 +74,17 @@ BinaryTree::Node* BinaryTree::copyTree(Node* node) const {
     newNode->setRightChild(copyTree(node->getRightChild()));
     return newNode;
 }
+
+bool BinaryTree::isEmpty() const {
+    return !_root;
+}
+
+BinaryTree::Node* BinaryTree::copySubtree(const Node *node) const {
+    Node* newNode = new Node(node->getKey());
+    if (node->getLeftChild())
+        newNode->setLeftChild(copySubtree(node->getLeftChild()));
+    if (node->getRightChild())
+        newNode->setRightChild(copySubtree(node->getRightChild()));
+
+    return newNode;
+}
