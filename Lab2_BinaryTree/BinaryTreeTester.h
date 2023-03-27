@@ -11,10 +11,14 @@ public:
 protected:
     void check_addAndCount(const BinaryTree &tree, const int size);
     void check_destructor(const BinaryTree &tree, const int size);
+    void check_assign(BinaryTree &tree1, BinaryTree &tree2);
+    void check_remove(const BinaryTree &tree, const int size);
 
 private:
     void addAndCount();
     void destructor();
+    void assign();
+    void remove();
 
 private:
     int _maxSize;
