@@ -20,7 +20,18 @@ public:
         void setLeftChild(Node* leftChild);
         void setRightChild(Node* rightChild);
     };
+    BinaryTree(); //- конструктор (по умолчанию);
+    BinaryTree(const BinaryTree& other); //- конструктор (копирования);
+    ~BinaryTree(); //- деструктор;
+    const Node* getRoot() const;//- получение корня дерева;
+    Node* getRoot();
+    void clear(); //- очистка дерева (удаление всех узлов);
+    void deleteSubtree(Node* node);
+    Node* copyTree(Node* node) const;
 
+
+private:
+    Node* _root = nullptr;
 };
 
 

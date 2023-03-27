@@ -35,3 +35,42 @@ void BinaryTree::Node::setLeftChild(Node *leftChild) {
 void BinaryTree::Node::setRightChild(Node *rightChild) {
     _rightChild = rightChild;
 }
+
+BinaryTree::BinaryTree() : _root(nullptr) {}
+
+BinaryTree::BinaryTree(const BinaryTree &other) : _root(copyTree(other._root)) {}
+
+BinaryTree::~BinaryTree() {
+    clear();
+}
+
+const BinaryTree::Node *BinaryTree::getRoot() const {
+    return _root;
+}
+
+BinaryTree::Node *BinaryTree::getRoot() {
+    return _root;
+}
+
+void BinaryTree::clear() {
+    deleteSubtree(_root);
+    _root = nullptr;
+}
+
+void BinaryTree::deleteSubtree(Node *node) {
+    if (node == nullptr)
+        return;
+
+    deleteSubtree(node->getLeftChild());
+    deleteSubtree(node->getRightChild());
+    node->setLeftChild(nullptr);
+    node->setRightChild(nullptr);
+}
+
+BinaryTree::Node* BinaryTree::copyTree(Node* node) const {
+    if (node == nullptr) return nullptr;
+    Node* newNode = new Node(node->getKey());
+    newNode->setLeftChild(copyTree(node->getLeftChild()));
+    newNode->setRightChild(copyTree(node->getRightChild()));
+    return newNode;
+}
