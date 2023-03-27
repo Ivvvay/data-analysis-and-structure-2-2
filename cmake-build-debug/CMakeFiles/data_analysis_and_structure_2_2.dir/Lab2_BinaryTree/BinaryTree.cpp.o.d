@@ -1,6 +1,5 @@
-CMakeFiles/data_analysis_and_structure_2_2.dir/main.cpp.o: \
-  /Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/main.cpp \
-  /Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTreeTester.h \
+CMakeFiles/data_analysis_and_structure_2_2.dir/Lab2_BinaryTree/BinaryTree.cpp.o: \
+  /Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTree.cpp \
   /Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTree.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__config \

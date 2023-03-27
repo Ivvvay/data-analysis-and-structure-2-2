@@ -177,6 +177,30 @@ Lab2_BinaryTree/BinaryTree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_analysis_and_structure_2_2.dir/build.make CMakeFiles/data_analysis_and_structure_2_2.dir/Lab2_BinaryTree/BinaryTree.cpp.s
 .PHONY : Lab2_BinaryTree/BinaryTree.cpp.s
 
+Lab2_BinaryTree/BinaryTreeTester.o: Lab2_BinaryTree/BinaryTreeTester.cpp.o
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.o
+
+# target to build an object file
+Lab2_BinaryTree/BinaryTreeTester.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_analysis_and_structure_2_2.dir/build.make CMakeFiles/data_analysis_and_structure_2_2.dir/Lab2_BinaryTree/BinaryTreeTester.cpp.o
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.cpp.o
+
+Lab2_BinaryTree/BinaryTreeTester.i: Lab2_BinaryTree/BinaryTreeTester.cpp.i
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.i
+
+# target to preprocess a source file
+Lab2_BinaryTree/BinaryTreeTester.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_analysis_and_structure_2_2.dir/build.make CMakeFiles/data_analysis_and_structure_2_2.dir/Lab2_BinaryTree/BinaryTreeTester.cpp.i
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.cpp.i
+
+Lab2_BinaryTree/BinaryTreeTester.s: Lab2_BinaryTree/BinaryTreeTester.cpp.s
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.s
+
+# target to generate assembly for a file
+Lab2_BinaryTree/BinaryTreeTester.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_analysis_and_structure_2_2.dir/build.make CMakeFiles/data_analysis_and_structure_2_2.dir/Lab2_BinaryTree/BinaryTreeTester.cpp.s
+.PHONY : Lab2_BinaryTree/BinaryTreeTester.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... Lab2_BinaryTree/BinaryTree.o"
 	@echo "... Lab2_BinaryTree/BinaryTree.i"
 	@echo "... Lab2_BinaryTree/BinaryTree.s"
+	@echo "... Lab2_BinaryTree/BinaryTreeTester.o"
+	@echo "... Lab2_BinaryTree/BinaryTreeTester.i"
+	@echo "... Lab2_BinaryTree/BinaryTreeTester.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -90,6 +90,12 @@
 		<Unit filename="/Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTree.h">
 			<Option target="data_analysis_and_structure_2_2"/>
 		</Unit>
+		<Unit filename="/Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTreeTester.cpp">
+			<Option target="data_analysis_and_structure_2_2"/>
+		</Unit>
+		<Unit filename="/Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/Lab2_BinaryTree/BinaryTreeTester.h">
+			<Option target="data_analysis_and_structure_2_2"/>
+		</Unit>
 		<Unit filename="/Users/ivvvay/CLionProjects/data-analysis-and-structure-2-2/main.cpp">
 			<Option target="data_analysis_and_structure_2_2"/>
 		</Unit>

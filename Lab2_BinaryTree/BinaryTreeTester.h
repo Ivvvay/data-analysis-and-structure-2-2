@@ -8,6 +8,12 @@ public:
     ~BinaryTreeTester() = default;
 
     void test(const int size);
+protected:
+    void check_addAndCount(const BinaryTree &tree, const int size);
+
+private:
+    void addAndCount();
+
 
 private:
     int _maxSize;
