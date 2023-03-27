@@ -4,6 +4,10 @@ void BinaryTreeTester::test(const int size) {
     _maxSize = size;
     addAndCount();
     destructor();
+    assign();
+    remove();
+    clear();
+    height();
 }
 
 void BinaryTreeTester::addAndCount() {
