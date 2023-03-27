@@ -88,3 +88,28 @@ BinaryTree::Node* BinaryTree::copySubtree(const Node *node) const {
 
     return newNode;
 }
+
+int BinaryTree::getHeight() const {
+    return getHeight(_root);
+}
+
+int BinaryTree::getHeight(const Node *node) const {
+    if (!node) {
+        return 0;
+    }
+    int leftHeight = getHeight(node->getLeftChild());
+    int rightHeight = getHeight(node->getRightChild());
+    return 1 + std::max(leftHeight, rightHeight);
+}
+
+int BinaryTree::getSize() const {
+    return getSize(_root);
+}
+
+int BinaryTree::getSize(const Node *node) const {
+    if (!node)
+        return 0;
+    return 1 + getSize(node->getLeftChild()) + getSize(node->getRightChild());
+}
+
+

@@ -1,6 +1,6 @@
 #ifndef DATA_ANALYSIS_AND_STRUCTURE_2_2_BINARYTREE_H
 #define DATA_ANALYSIS_AND_STRUCTURE_2_2_BINARYTREE_H
-
+#include <iostream>
 
 class BinaryTree {
 public:
@@ -30,6 +30,10 @@ public:
     bool isEmpty() const; //- isEmpty (возвращает true, если дерево пусто);
     Node* copySubtree(const Node* node) const; //- копирование поддерева узла (возвращает новый объект класса);
     Node* copyTree(Node* node) const;
+    int getHeight() const; //- получение высоты дерева;
+    int getHeight(const Node* node) const;
+    int getSize() const; //- получение количества узлов дерева;
+    int getSize(const Node* node) const;
 
 
 private:
