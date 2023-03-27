@@ -331,3 +331,51 @@ void BinaryTree::inorderTraversal(const Node *node, std::vector<int> &keys) {
     inorderTraversal(node->getRightChild(), keys);
 }
 
+void BinaryTree::printTree() const {
+    printTree(_root, 0);
+}
+
+void BinaryTree::printTree(const Node *node, int indent) const {
+    if (node == nullptr) return;
+
+    if (node->getRightChild() != nullptr)
+        printTree(node->getRightChild(), indent + 4);
+
+    if (indent > 0)
+        std::cout << std::setw(indent) << ' ';
+
+    if (node->getRightChild() != nullptr)
+        std::cout << " /\n" << std::setw(indent) << ' ';
+
+    std::cout << node->getKey() << "\n ";
+
+    if (node->getLeftChild() != nullptr) {
+        std::cout << std::setw(indent) << ' ' << " \\\n";
+        printTree(node->getLeftChild(), indent + 4);
+    }
+    /*if (node == nullptr) {
+        return;
+    }
+    printTree(node->getRightChild(), indent + 1);
+    for (int i = 0; i < indent; i++) {
+        std::cout << "    ";
+    }
+    std::cout << node->getKey() << std::endl;
+    printTree(node->getLeftChild(), indent + 1);*/
+}
+
+void BinaryTree::printLeaves() const {
+    printLeaves(_root);
+}
+
+void BinaryTree::printLeaves(const Node *node) const {
+    if (!node) return;
+
+    if (node->getLeftChild() == nullptr && node->getRightChild() == nullptr)
+        std::cout << node->getKey() << " ";
+    else {
+        printLeaves(node->getLeftChild());
+        printLeaves(node->getRightChild());
+    }
+}
+

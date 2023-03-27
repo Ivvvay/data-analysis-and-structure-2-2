@@ -2,6 +2,7 @@
 #define DATA_ANALYSIS_AND_STRUCTURE_2_2_BINARYTREE_H
 #include <iostream>
 #include <random>
+#include <iomanip>
 
 class BinaryTree {
 public:
@@ -51,6 +52,7 @@ public:
     Node* findNodeByKey(int key);//- поиск узла по ключу
     Node* findNodeByKey(int key, Node* currentNode);
     Node* findParent(Node* node, Node* current); //- поиск предков
+
     bool isBalanced(); //- проверка дерева на сбалансированность (возвращает true, если дерево является сбалансированным:
     bool isBalanced(const Node* node); //высоты правого и левого поддеревьев отличаются не более, чем на единицу, и сами поддеревья также являются сбалансированными);
     int getSum(); //- получение суммы всех ключей дерева;
@@ -59,6 +61,11 @@ public:
     int getNodeLevel(int key, const Node* node, int level);
     std::vector<int> getKeys(); //- получение вектора  содержащего все ключи дерева (обход вершин производить любым способом - Л-К-П);
     void inorderTraversal(const Node* node, std::vector<int>& keys);
+
+    void printTree() const; //- вывод в консоль дерева в горизонтальном виде;
+    void printTree(const Node* node, int indent) const;
+    void printLeaves() const; //- вывод в консоль листьев дерева;
+    void printLeaves(const Node* node) const;
 
 
 private:
