@@ -28,6 +28,7 @@ public:
     Node* getRoot();
 
     void clear(); //- очистка дерева (удаление всех узлов);
+    void deleteSubtree(int key);//- удаление поддеревьев узла;
     void deleteSubtree(Node* node);
     bool isEmpty() const; //- isEmpty (возвращает true, если дерево пусто);
     Node* copySubtree(const Node* node) const; //- копирование поддерева узла (возвращает новый объект класса);

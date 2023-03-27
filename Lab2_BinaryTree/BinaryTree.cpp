@@ -57,6 +57,14 @@ void BinaryTree::clear() {
     _root = nullptr;
 }
 
+void BinaryTree::deleteSubtree(int key) {
+    Node* nodeToRemove = findNodeByKey(key);
+    if (nodeToRemove) {
+        deleteSubtree(nodeToRemove);
+        removeNode(nodeToRemove);
+    }
+}
+
 void BinaryTree::deleteSubtree(Node *node) {
     if (node == nullptr)
         return;
