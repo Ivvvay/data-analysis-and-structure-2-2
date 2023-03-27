@@ -136,6 +136,18 @@ int BinaryTree::getSize(const Node *node) const {
     return 1 + getSize(node->getLeftChild()) + getSize(node->getRightChild());
 }
 
+int BinaryTree::getMinKey() {
+    std::vector<int> keys = getKeys();
+    auto min_element = std::min_element(keys.begin(), keys.end());
+    return *min_element;
+}
+
+int BinaryTree::getMaxKey() {
+    std::vector<int> keys = getKeys();
+    auto max_element = std::max_element(keys.begin(), keys.end());
+    return *max_element;
+}
+
 BinaryTree::Node *BinaryTree::addNode(Node* root, int key) {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -304,3 +316,18 @@ int BinaryTree::getNodeLevel(int key, const Node *node, int level) {
 
     return getNodeLevel(key,node->getRightChild(), level + 1);
 }
+
+std::vector<int> BinaryTree::getKeys() {
+    std::vector<int> keys;
+    inorderTraversal(_root, keys);
+    return keys;
+}
+
+void BinaryTree::inorderTraversal(const Node *node, std::vector<int> &keys) {
+    if (!node) return;
+
+    inorderTraversal(node->getLeftChild(), keys);
+    keys.push_back(node->getKey());
+    inorderTraversal(node->getRightChild(), keys);
+}
+

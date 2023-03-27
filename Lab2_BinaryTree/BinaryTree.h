@@ -41,6 +41,8 @@ public:
     int getHeight(const Node* node) const;
     int getSize() const; //- получение количества узлов дерева;
     int getSize(const Node* node) const;
+    int getMinKey(); //- получение минимального ключа дерева;
+    int getMaxKey(); //- получение максимального ключа дерева;
 
     Node* addNode(int key); //- добавление узла в дерево (методом случайного выбора поддерева);
     Node* addNode(Node* root, int key);
@@ -55,6 +57,8 @@ public:
     int getSum(const Node* node);
     int getNodeLevel(int key);//- получение уровня вершины по ключу (возвращает индекс уровня или -1, если вершина не найдена);
     int getNodeLevel(int key, const Node* node, int level);
+    std::vector<int> getKeys(); //- получение вектора  содержащего все ключи дерева (обход вершин производить любым способом - Л-К-П);
+    void inorderTraversal(const Node* node, std::vector<int>& keys);
 
 
 private:
