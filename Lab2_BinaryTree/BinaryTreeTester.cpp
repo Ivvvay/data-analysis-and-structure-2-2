@@ -102,3 +102,108 @@ void BinaryTreeTester::remove() {
 void BinaryTreeTester::check_remove(const BinaryTree &tree, const int size) {
     assert(tree.getSize() == size);
 }
+
+void BinaryTreeTester::clear() {
+    BinaryTree tree;
+    for (int i = 0 ; i < _maxSize; ++i)
+        tree.addNode(i);
+
+    tree.clear();
+    check_clear(tree);
+}
+
+void BinaryTreeTester::check_clear(const BinaryTree &tree) {
+    assert(tree.getSize() == 0);
+}
+
+void BinaryTreeTester::height() {
+    height_trivialCases();
+    height_longOnlyLeftSubtree();
+    height_longOnlyRightSubtree();
+    height_longOnlyLeftAndRightSubtrees();
+    height_longRandomZigzagSubtrees();
+}
+
+void BinaryTreeTester::check_height(const BinaryTree &tree, const int height) {
+    assert(tree.getHeight() == height);
+}
+
+void BinaryTreeTester::height_trivialCases() {
+    BinaryTree tree;
+    check_height(tree, 0);
+    tree.addNode(0);
+    check_height(tree, 1);
+}
+
+void BinaryTreeTester::height_longOnlyLeftSubtree() {
+    BinaryTree longTree;
+    longTree.addNode(0);
+    BinaryTree::Node *runner = longTree.getRoot();
+    for (int i = 1; i < _maxSize; ++i) {
+        runner->setLeftChild(new BinaryTree::Node(i));
+        runner = runner->getLeftChild();
+        check_height(longTree, i + 1);
+    }
+}
+
+void BinaryTreeTester::height_longOnlyRightSubtree() {
+    BinaryTree longTree;
+    longTree.addNode(0);
+    BinaryTree::Node *runner = longTree.getRoot();
+    for (int i = 1; i < _maxSize; ++i) {
+        runner->setRightChild(new BinaryTree::Node(i));
+        runner = runner->getRightChild();
+        check_height(longTree, i + 1);
+    }
+}
+
+void BinaryTreeTester::height_longOnlyLeftAndRightSubtrees() {
+    BinaryTree longTree;
+    longTree.addNode(0);
+    BinaryTree::Node *leftRunner = longTree.getRoot();
+    BinaryTree::Node *rightRunner = longTree.getRoot();
+    for (int i = 1; i < _maxSize/2; ++i) {
+        leftRunner->setLeftChild(new BinaryTree::Node(i));
+        leftRunner = leftRunner->getLeftChild();
+        check_height(longTree, i + 1);
+
+        rightRunner->setRightChild(new BinaryTree::Node(i));
+        rightRunner = rightRunner->getRightChild();
+        check_height(longTree, i + 1);
+    }
+}
+
+void BinaryTreeTester::height_longRandomZigzagSubtrees() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    BinaryTree longTree;
+    longTree.addNode(0);
+    BinaryTree::Node *leftRunner = longTree.getRoot();
+    BinaryTree::Node *rightRunner = longTree.getRoot();
+
+    leftRunner->setLeftChild(new BinaryTree::Node(1));
+    leftRunner = leftRunner->getLeftChild();
+    rightRunner->setRightChild(new BinaryTree::Node(1));
+    rightRunner = rightRunner->getRightChild();
+
+    for (int i = 2; i < _maxSize/2; ++i) {
+        if (gen() % 2 == 0) {
+            leftRunner->setLeftChild(new BinaryTree::Node(i));
+            leftRunner = leftRunner->getLeftChild();
+        } else {
+            leftRunner->setRightChild(new BinaryTree::Node(i));
+            leftRunner = leftRunner->getRightChild();
+        }
+        check_height(longTree, i + 1);
+
+        if (gen() % 2 == 0) {
+            rightRunner->setLeftChild(new BinaryTree::Node(i));
+            rightRunner = rightRunner->getLeftChild();
+        } else {
+            rightRunner->setRightChild(new BinaryTree::Node(i));
+            rightRunner = rightRunner->getRightChild();
+        }
+        check_height(longTree, i + 1);
+    }
+}
