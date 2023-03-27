@@ -1,6 +1,7 @@
 #ifndef DATA_ANALYSIS_AND_STRUCTURE_2_2_BINARYTREE_H
 #define DATA_ANALYSIS_AND_STRUCTURE_2_2_BINARYTREE_H
 #include <iostream>
+#include <random>
 
 class BinaryTree {
 public:
@@ -25,15 +26,25 @@ public:
     ~BinaryTree(); //- деструктор;
     const Node* getRoot() const;//- получение корня дерева;
     Node* getRoot();
+
     void clear(); //- очистка дерева (удаление всех узлов);
     void deleteSubtree(Node* node);
     bool isEmpty() const; //- isEmpty (возвращает true, если дерево пусто);
     Node* copySubtree(const Node* node) const; //- копирование поддерева узла (возвращает новый объект класса);
     Node* copyTree(Node* node) const;
+
     int getHeight() const; //- получение высоты дерева;
     int getHeight(const Node* node) const;
     int getSize() const; //- получение количества узлов дерева;
     int getSize(const Node* node) const;
+
+    Node* addNode(int key); //- добавление узла в дерево (методом случайного выбора поддерева);
+    Node* addNode(Node* root, int key);
+    bool removeNode(int key); //- удаление узла из дерева по ключу (возвращает true, если узел был удалён);
+    void removeNode(Node* node);
+    Node* findNodeByKey(int key);//- поиск узла по ключу
+    Node* findNodeByKey(int key, Node* currentNode);
+    Node* findParent(Node* node, Node* current); //- поиск предков
 
 
 private:

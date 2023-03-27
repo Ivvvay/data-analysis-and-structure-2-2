@@ -112,4 +112,122 @@ int BinaryTree::getSize(const Node *node) const {
     return 1 + getSize(node->getLeftChild()) + getSize(node->getRightChild());
 }
 
+BinaryTree::Node *BinaryTree::addNode(Node* root, int key) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    if (!root) {
+        root = new Node(key);
+    } else if (gen() % 2) {
+        root->setLeftChild(addNode(root->getLeftChild(), key));
+    } else {
+        root->setRightChild(addNode(root->getRightChild(), key));
+    }
+    return root;
+}
 
+BinaryTree::Node *BinaryTree::addNode(int key) {
+    if (_root)
+        return addNode(_root, key);
+    else
+        return _root = new Node(key);
+
+}
+
+bool BinaryTree::removeNode(int key) {
+    Node* nodeToRemove = findNodeByKey(key);
+    if (!nodeToRemove) {
+        return false;
+    }
+    removeNode(nodeToRemove);
+    return true;
+
+}
+
+void BinaryTree::removeNode(Node* node) {
+    // случай, когда удаляемый узел - корень дерева
+    if (node == _root) {
+        delete _root;
+        _root = nullptr;
+        return;
+    }
+
+    Node* nodeParent = findParent(node, _root);
+    if (nodeParent == nullptr) {
+        // узел не найден
+        return;
+    }
+
+    Node* replacementNode = nullptr;
+    if (node->getLeftChild() == nullptr && node->getRightChild() == nullptr) {
+        // случай 1: удаляемый узел - лист
+        replacementNode = nullptr;
+    } else if (node->getLeftChild() == nullptr) {
+        // случай 2.1: удаляемый узел имеет только правого потомка
+        replacementNode = node->getRightChild();
+    } else if (node->getRightChild() == nullptr) {
+        // случай 2.2: удаляемый узел имеет только левого потомка
+        replacementNode = node->getLeftChild();
+    } else {
+        // случай 3: удаляемый узел имеет обоих потомков
+        // найти наименьший узел в правом поддереве
+        Node* minNode = node->getRightChild();
+        while (minNode->getLeftChild() != nullptr) {
+            minNode = minNode->getLeftChild();
+        }
+        replacementNode = minNode;
+        // разрыв связи удаляемого узла с его предком
+        Node* minNodeParent = findParent(minNode, _root);
+        if (minNodeParent != node) {
+            minNodeParent->setLeftChild(replacementNode->getRightChild());
+            replacementNode->setRightChild(node->getRightChild());
+        }
+        replacementNode->setLeftChild(node->getLeftChild());
+    }
+
+    // удаление узла
+    if (nodeParent->getLeftChild() == node) {
+        nodeParent->setLeftChild(replacementNode);
+    } else {
+        nodeParent->setRightChild(replacementNode);
+    }
+    delete node;
+}
+
+BinaryTree::Node* BinaryTree::findNodeByKey(int key) {
+    Node* nodeToRemove = findNodeByKey(key, _root);
+    if (nodeToRemove == nullptr)
+        return nullptr;
+    return nodeToRemove;
+}
+
+BinaryTree::Node* BinaryTree::findNodeByKey(int key, Node* currentNode) {
+    if (currentNode == nullptr)
+        return nullptr;
+    if (currentNode->getKey() == key)
+        return currentNode;
+    Node* leftResult = findNodeByKey(key, currentNode->getLeftChild());
+    if (leftResult != nullptr)
+        return leftResult;
+    Node* rightResult = findNodeByKey(key, currentNode->getRightChild());
+    if (rightResult != nullptr)
+        return rightResult;
+    return nullptr;
+}
+
+BinaryTree::Node* BinaryTree::findParent(Node* node, Node* current) {
+    if (_root == node)
+        return nullptr;
+
+    if (current == nullptr)
+        return nullptr;
+
+    if (current->getLeftChild() == node || current->getRightChild() == node)
+        return current;
+
+    Node* parent = findParent(node, current->getLeftChild());
+    if (parent != nullptr)
+        return parent;
+
+    parent = findParent(node, current->getRightChild());
+    return parent;
+}
