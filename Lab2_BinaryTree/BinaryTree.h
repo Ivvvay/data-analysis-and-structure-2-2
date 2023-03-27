@@ -51,6 +51,10 @@ public:
     Node* findParent(Node* node, Node* current); //- поиск предков
     bool isBalanced(); //- проверка дерева на сбалансированность (возвращает true, если дерево является сбалансированным:
     bool isBalanced(const Node* node); //высоты правого и левого поддеревьев отличаются не более, чем на единицу, и сами поддеревья также являются сбалансированными);
+    int getSum(); //- получение суммы всех ключей дерева;
+    int getSum(const Node* node);
+    int getNodeLevel(int key);//- получение уровня вершины по ключу (возвращает индекс уровня или -1, если вершина не найдена);
+    int getNodeLevel(int key, const Node* node, int level);
 
 
 private:

@@ -276,3 +276,31 @@ bool BinaryTree::isBalanced(const Node *node) {
 
     return isBalanced(node->getLeftChild()) && isBalanced(node->getRightChild());
 }
+
+int BinaryTree::getSum() {
+    return getSum(_root);
+}
+
+int BinaryTree::getSum(const Node *node) {
+    if (!node)
+        return 0;
+
+    return node->getKey() + getSum(node->getLeftChild()) + getSum(node->getRightChild());
+}
+
+int BinaryTree::getNodeLevel(int key) {
+    return getNodeLevel(key, _root, 1);
+}
+
+int BinaryTree::getNodeLevel(int key, const Node *node, int level) {
+    if (!node)
+        return -1;
+    if (node->getKey() == key)
+        return level;
+
+    int leftLevel = getNodeLevel(key, node->getLeftChild(), level + 1);
+    if (leftLevel != -1)
+        return leftLevel;
+
+    return getNodeLevel(key,node->getRightChild(), level + 1);
+}
