@@ -1,4 +1,4 @@
-#include "Lab2_BinaryTree/BinaryTreeTester.h"
+#include "BinaryTreeTester.h"
 
 int main() {
     BinaryTreeTester tester;
