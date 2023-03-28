@@ -220,11 +220,16 @@ std::string sortFile(const std::string& fileName) {
         }
     } while (!fileIsEmpty(F, G));
 
-        flag = fileIsEmpty(F, G);
+    F[1].open("F2.txt", std::ios::in);
+    G[1].open("G2.txt", std::ios::in);
+    if (G[1].peek() == EOF) {
+        F[1].close(); G[1].close();
+        return "G1.txt";
+    } else {
+        F[1].close(); G[1].close();
+        return "F1.txt";
     }
-    file.close();
-    F[0].close();
-    F[1].close();
+        
 }
 
 int createAndSortFile(const std::string& fileName, const int numbersCount, const int maxNumberValue) {
