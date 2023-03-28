@@ -23,16 +23,18 @@ bool isFileContainsSortedArray(const std::string& fileName) {
         return false;
 
     int num1, num2;
-    file >> num1;
-    while(!file.eof()) {
+    int numCount = bool(file >> num1);
+    while(file >> num2) {
         file >> num2;
         if (num1 > num2) {
             file.close();
             return false;
         }
         num1 = num2;
+        ++numCount;
     }
 
+    //std::cout << numCount << std::endl;
     file.close();
     return true;
 }
