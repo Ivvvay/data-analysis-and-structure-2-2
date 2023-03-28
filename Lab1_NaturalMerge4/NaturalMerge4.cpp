@@ -159,7 +159,7 @@ bool fileIsEmpty(std::fstream* F, std::fstream* G) {
     return false;
 }
 
-void sortFile(const std::string& fileName) {
+std::string sortFile(const std::string& fileName) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         std::cerr << "Error: File A isn't open" << std::endl;

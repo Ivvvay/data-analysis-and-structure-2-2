@@ -10,8 +10,8 @@ bool isFileContainsSortedArray(const std::string& fileName);
 void splitFile(const std::string& fileName, std::fstream* F);
 void mergeFile(std::fstream* F, std::fstream* G);
 bool fileIsEmpty(std::fstream* F, std::fstream* G);
-void sortFile(const std::string& fileName);
+std::string sortFile(const std::string& fileName);
 int createAndSortFile(const std::string& fileName, const int numbersCount, const int maxNumberValue);
-void NaturalMerge4();
+void testNaturalMerge4();
 
 #endif //DATA_ANALYSIS_AND_STRUCTURE_2_2_NATURALMERGE4_H
