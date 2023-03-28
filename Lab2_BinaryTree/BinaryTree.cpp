@@ -281,11 +281,6 @@ bool BinaryTree::isBalanced(const Node *node) {
     if (abs(leftHeight - rightHeight) > 1)
         return false;
 
-    int leftSize = getSize(node->getLeftChild());
-    int rightSize = getSize(node->getRightChild());
-    if (abs(leftSize - rightSize) > 1)
-        return false;
-
     return isBalanced(node->getLeftChild()) && isBalanced(node->getRightChild());
 }
 
