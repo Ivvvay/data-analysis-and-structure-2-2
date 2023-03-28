@@ -175,8 +175,7 @@ std::string sortFile(const std::string& fileName) {
 
     ///Merge
     std::fstream G[2];
-    bool flag = false;
-    while (!flag) {
+    do {
         F[0].open("F1.txt", std::ios::in);
         F[1].open("F2.txt", std::ios::in);
         if (!F[0] || !F[1]) {
@@ -219,6 +218,7 @@ std::string sortFile(const std::string& fileName) {
             F[i].close();
             G[i].close();
         }
+    } while (!fileIsEmpty(F, G));
 
         flag = fileIsEmpty(F, G);
     }
