@@ -25,14 +25,10 @@ void BinaryTreeTester::check_addAndCount(const BinaryTree &tree, const int size)
 }
 
 void BinaryTreeTester::destructor() {
-    BinaryTree tree;
-    check_destructor(tree, 0);
-    for (int i = 0 ; i < _maxSize; ++i) {
-        tree.addNode(i);
-        check_destructor(tree, i + 1);
+    for (int i = 0; i < 1000000; ++i) {
+        addAndCount();
     }
-    tree.~BinaryTree();
-    check_destructor(tree, 0);
+    getchar();
 }
 
 void BinaryTreeTester::check_destructor(const BinaryTree &tree, const int size) {
