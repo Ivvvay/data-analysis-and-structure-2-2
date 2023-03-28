@@ -244,10 +244,10 @@ int createAndSortFile(const std::string& fileName, const int numbersCount, const
     return 1;
 }
 
-void NaturalMerge4() {
+void testNaturalMerge4() {
     std::string fileName = "F.txt";
-    const int numbersCount = 10000;
-    const int maxNumberValue = 100000;
+    const int numbersCount = 10;
+    const int maxNumberValue = 1'000'000'000;
 
     for (int i = 1; i < 11; i++) {
         switch (createAndSortFile(fileName, numbersCount, maxNumberValue)) {
