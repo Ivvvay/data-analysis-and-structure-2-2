@@ -170,6 +170,9 @@ std::string sortFile(const std::string& fileName) {
     ///Split
     std::fstream F[2];
     splitFile(fileName, F);
+    file.close();
+    F[0].close();
+    F[1].close();
 
     ///Merge
     std::fstream G[2];
