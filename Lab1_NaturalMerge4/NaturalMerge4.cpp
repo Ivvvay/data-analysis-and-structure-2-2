@@ -236,10 +236,9 @@ int createAndSortFile(const std::string& fileName, const int numbersCount, const
     if (!createFileWithRandomNumbers(fileName, numbersCount, maxNumberValue))
         return -1;
 
-    sortFile(fileName);
+    std::string result = sortFile(fileName);
 
-    if (!isFileContainsSortedArray("F1.txt")
-        && !isFileContainsSortedArray("G1.txt"))
+    if (!isFileContainsSortedArray(result))
         return -2;
 
     return 1;
