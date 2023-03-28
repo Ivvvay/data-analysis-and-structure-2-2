@@ -15,6 +15,7 @@ protected:
     void check_remove(const BinaryTree &tree, const int size);
     void check_clear(const BinaryTree &tree);
     void check_height(const BinaryTree &tree, const int size);
+    void check_copySubtreeAndDelete(const BinaryTree &copySubtree, const BinaryTree &copySubtreeForDel, const BinaryTree &longTree);
 
 private:
     void addAndCount();
@@ -28,6 +29,7 @@ private:
     void height_longOnlyRightSubtree();
     void height_longOnlyLeftAndRightSubtrees();
     void height_longRandomZigzagSubtrees();
+    void copySubtreeAndDelete();
 
 private:
     int _maxSize;

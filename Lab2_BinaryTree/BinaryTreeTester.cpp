@@ -3,11 +3,12 @@
 void BinaryTreeTester::test(const int size) {
     _maxSize = size;
     addAndCount();
-    destructor();
+    //destructor();
     assign();
     remove();
     clear();
     height();
+    copySubtreeAndDelete();
 }
 
 void BinaryTreeTester::addAndCount() {
@@ -25,14 +26,10 @@ void BinaryTreeTester::check_addAndCount(const BinaryTree &tree, const int size)
 }
 
 void BinaryTreeTester::destructor() {
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < _maxSize; ++i) {
         addAndCount();
     }
     getchar();
-}
-
-void BinaryTreeTester::check_destructor(const BinaryTree &tree, const int size) {
-    assert(tree.getSize() == size);
 }
 
 void BinaryTreeTester::assign() {
@@ -206,4 +203,67 @@ void BinaryTreeTester::height_longRandomZigzagSubtrees() {
         }
         check_height(longTree, i + 1);
     }
+    //longTree.printTree();
+}
+
+void BinaryTreeTester::copySubtreeAndDelete() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    BinaryTree longTree;
+    longTree.addNode(0);
+    BinaryTree::Node *leftRunner = longTree.getRoot();
+    BinaryTree::Node *rightRunner = longTree.getRoot();
+
+    leftRunner->setLeftChild(new BinaryTree::Node(1));
+    leftRunner = leftRunner->getLeftChild();
+    rightRunner->setRightChild(new BinaryTree::Node(1));
+    rightRunner = rightRunner->getRightChild();
+
+    for (int i = 2; i < _maxSize/2; ++i) {
+        if (gen() % 2 == 0) {
+            leftRunner->setLeftChild(new BinaryTree::Node(i));
+            leftRunner = leftRunner->getLeftChild();
+        } else {
+            leftRunner->setRightChild(new BinaryTree::Node(i));
+            leftRunner = leftRunner->getRightChild();
+        }
+        check_height(longTree, i + 1);
+
+        if (gen() % 2 == 0) {
+            rightRunner->setLeftChild(new BinaryTree::Node(i));
+            rightRunner = rightRunner->getLeftChild();
+        } else {
+            rightRunner->setRightChild(new BinaryTree::Node(i));
+            rightRunner = rightRunner->getRightChild();
+        }
+        check_height(longTree, i + 1);
+    }
+
+    std::uniform_int_distribution<> dis(0, longTree.getHeight());
+    int copySubtreeKey = dis(gen);
+    BinaryTree copySubtree = longTree.copySubtree(copySubtreeKey);
+
+    BinaryTree copySubtreeForDel = longTree;
+    copySubtreeForDel.deleteSubtree(copySubtreeKey);
+
+    ///Visualization
+    std::cout << "longTree.getSize() = " << longTree.getSize() << std::endl;
+    std::cout << "copySubtree.getSize() = " << copySubtree.getSize() << std::endl;
+    std::cout << "copySubtreeForDel.getSize() = " << copySubtreeForDel.getSize() << std::endl;
+    std::cout << "copySubtreeKey = " << copySubtreeKey << std::endl;
+
+    std::cout << "longTree: \n";
+    longTree.printTree();
+    std::cout << "copySubtree: \n";
+    copySubtree.printTree();
+    std::cout << "copySubtreeForDel: \n";
+    copySubtreeForDel.printTree();
+
+    check_copySubtreeAndDelete(copySubtree, copySubtreeForDel, longTree);
+}
+void BinaryTreeTester::check_copySubtreeAndDelete(const BinaryTree &copySubtree,
+                                                  const BinaryTree &copySubtreeForDel,
+                                                  const BinaryTree &longTree) {
+    assert(copySubtree.getSize() + copySubtreeForDel.getSize() == longTree.getSize());
 }
