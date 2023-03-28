@@ -1,6 +1,6 @@
 #include "NaturalMerge4.h"
 
 int main() {
-    NaturalMerge4();
+    testNaturalMerge4();
     return 0;
 }
