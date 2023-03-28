@@ -58,7 +58,7 @@ public:
     int getSum(); //- получение суммы всех ключей дерева;
     int getSum(const Node* node);
     int getNodeLevel(int key);//- получение уровня вершины по ключу (возвращает индекс уровня или -1, если вершина не найдена);
-    int getNodeLevel(int key, const Node* node, int level);
+    int getNodeLevel(int key, const Node* node, int level = 1);
     std::vector<int> getKeys(); //- получение вектора  содержащего все ключи дерева (обход вершин производить любым способом - Л-К-П);
     void inorderTraversal(const Node* node, std::vector<int>& keys);
 

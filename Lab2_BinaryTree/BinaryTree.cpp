@@ -296,7 +296,7 @@ int BinaryTree::getSum(const Node *node) {
 }
 
 int BinaryTree::getNodeLevel(int key) {
-    return getNodeLevel(key, _root, 1);
+    return getNodeLevel(key, _root);
 }
 
 int BinaryTree::getNodeLevel(int key, const Node *node, int level) {
