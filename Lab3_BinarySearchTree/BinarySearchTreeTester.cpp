@@ -3,6 +3,7 @@
 void BinarySearchTreeTester::test(const int size) {
     _maxSize = size;
     isBST();
+    copySubtreeSearch();
 }
 
 void BinarySearchTreeTester::isBST() {
@@ -34,4 +35,22 @@ bool BinarySearchTreeTester::check_BST(BinarySearchTree::Node* root, int minVal,
     }
     return check_BST(root->getLeftChild(), minVal, root->getKey() - 1) &&
            check_BST(root->getRightChild(), root->getKey(), maxVal);
+}
+
+void BinarySearchTreeTester::copySubtreeSearch() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, _maxSize-1);
+
+    BinarySearchTree tree;
+    for (int i = 0; i < _maxSize; i++)
+        tree.addNode(i);
+
+    int copySubtreeSearchKey = dis(gen);
+    BinarySearchTree subTree = tree.copySubtreeSearch(copySubtreeSearchKey);
+    check_copySubtreeSearch(subTree, tree, copySubtreeSearchKey);
+}
+
+void BinarySearchTreeTester::check_copySubtreeSearch(BinarySearchTree &subTree, BinarySearchTree &tree, const int key) {
+    assert(subTree.getHeight() + key == tree.getHeight());
 }

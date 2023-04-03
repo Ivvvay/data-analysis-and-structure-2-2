@@ -9,8 +9,12 @@ public:
     void test(const int size);
 protected:
     bool check_BST(BinarySearchTree::Node* root, int minVal, int maxVal);
+    void check_copySubtreeSearch(BinarySearchTree &subTree, BinarySearchTree &tree, const int key);
+
 private:
     void isBST();
+    void copySubtreeSearch();
+
 private:
     int _maxSize;
 };
