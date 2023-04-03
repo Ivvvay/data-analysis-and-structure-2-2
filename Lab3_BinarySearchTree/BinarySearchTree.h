@@ -10,6 +10,10 @@ class BinarySearchTree : public BinaryTree {
 
     BinarySearchTree copySubtreeSearch(int key);
     Node* copySubtree(const Node* node) const override;
+
+    int getMinKey() override;
+    int getMaxKey() override;
+    
 };
 
 

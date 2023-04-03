@@ -25,3 +25,25 @@ BinarySearchTree BinarySearchTree::copySubtreeSearch(int key) {
 BinaryTree::Node *BinarySearchTree::copySubtree(const BinaryTree::Node *node) const {
     return BinaryTree::copySubtree(node);
 }
+
+int BinarySearchTree::getMinKey() {
+    if (_root == nullptr) {
+        throw std::runtime_error("Tree is empty");
+    }
+    Node* current = _root;
+    while (current->getLeftChild() != nullptr) {
+        current = current->getLeftChild();
+    }
+    return current->getKey();
+}
+
+int BinarySearchTree::getMaxKey() {
+    if (_root == nullptr) {
+        throw std::runtime_error("Tree is empty");
+    }
+    Node* current = _root;
+    while (current->getRightChild() != nullptr) {
+        current = current->getRightChild();
+    }
+    return current->getKey();
+}
