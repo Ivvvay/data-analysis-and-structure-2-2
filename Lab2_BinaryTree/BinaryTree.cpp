@@ -138,12 +138,14 @@ int BinaryTree::getSize(const Node *node) const {
 
 int BinaryTree::getMinKey() {
     std::vector<int> keys = getKeys();
+    if (keys.empty()) return -1;
     auto min_element = std::min_element(keys.begin(), keys.end());
     return *min_element;
 }
 
 int BinaryTree::getMaxKey() {
     std::vector<int> keys = getKeys();
+    if (keys.empty()) return -1;
     auto max_element = std::max_element(keys.begin(), keys.end());
     return *max_element;
 }
