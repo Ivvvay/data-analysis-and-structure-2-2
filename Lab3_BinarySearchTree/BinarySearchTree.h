@@ -3,6 +3,7 @@
 #include "BinaryTree.h"
 
 class BinarySearchTree : public BinaryTree {
+public:
     BinarySearchTree();
     BinarySearchTree(const BinarySearchTree& other);
     explicit BinarySearchTree(Node* newRoot);
