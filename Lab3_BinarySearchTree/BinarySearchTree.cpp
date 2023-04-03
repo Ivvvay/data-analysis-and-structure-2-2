@@ -47,3 +47,22 @@ int BinarySearchTree::getMaxKey() {
     }
     return current->getKey();
 }
+
+BinaryTree::Node *BinarySearchTree::addNode(BinaryTree::Node *root, int key) {
+    if (!root) {
+        root = new Node(key);
+    } else if (key < root->getKey()) {
+        root->setLeftChild(addNode(root->getLeftChild(), key));
+    } else {
+        root->setRightChild(addNode(root->getRightChild(), key));
+    }
+    return root;
+}
+
+BinaryTree::Node *BinarySearchTree::addNode(int key) {
+    if (_root)
+        return addNode(_root, key);
+    else
+        return _root = new Node(key);
+}
+

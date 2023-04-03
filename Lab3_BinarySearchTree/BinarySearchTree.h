@@ -13,7 +13,10 @@ class BinarySearchTree : public BinaryTree {
 
     int getMinKey() override;
     int getMaxKey() override;
-    
+
+    Node* addNode(int key) override;
+    Node* addNode(Node* root, int key) override;
+
 };
 
 
