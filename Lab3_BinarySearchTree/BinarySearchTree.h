@@ -5,7 +5,11 @@
 class BinarySearchTree : public BinaryTree {
     BinarySearchTree();
     BinarySearchTree(const BinarySearchTree& other);
+    explicit BinarySearchTree(Node* newRoot);
     ~BinarySearchTree() override;
+
+    BinarySearchTree copySubtreeSearch(int key);
+    Node* copySubtree(const Node* node) const override;
 };
 
 
