@@ -145,3 +145,11 @@ BinarySearchTree::Node* BinarySearchTree::getSuccessor(Node* node) {
 
     return successor;
 }
+
+BinaryTree::Node *BinarySearchTree::findNodeByKey(int key) {
+    return BinaryTree::findNodeByKey(key);
+}
+
+int BinarySearchTree::getNodeLevel(int key) {
+    return BinaryTree::getNodeLevel(key);
+}

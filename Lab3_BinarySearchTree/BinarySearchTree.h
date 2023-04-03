@@ -19,6 +19,10 @@ class BinarySearchTree : public BinaryTree {
 
     bool removeNodeSearch(int key);
     Node* getSuccessor(Node* node);
+
+    Node* findNodeByKey(int key) override;
+    int getNodeLevel(int key) override;
+
 };
 
 
