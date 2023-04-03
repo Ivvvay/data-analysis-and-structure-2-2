@@ -247,7 +247,7 @@ void BinaryTreeTester::copySubtreeAndDelete() {
     BinaryTree copySubtreeForDel = longTree;
     copySubtreeForDel.deleteSubtree(copySubtreeKey);
 
-    ///Visualization
+    /*///visualization
     std::cout << "longTree.getSize() = " << longTree.getSize() << std::endl;
     std::cout << "copySubtree.getSize() = " << copySubtree.getSize() << std::endl;
     std::cout << "copySubtreeForDel.getSize() = " << copySubtreeForDel.getSize() << std::endl;
@@ -258,7 +258,7 @@ void BinaryTreeTester::copySubtreeAndDelete() {
     std::cout << "copySubtree: \n";
     copySubtree.printTree();
     std::cout << "copySubtreeForDel: \n";
-    copySubtreeForDel.printTree();
+    copySubtreeForDel.printTree();*/
 
     check_copySubtreeAndDelete(copySubtree, copySubtreeForDel, longTree);
 }
