@@ -1,0 +1,14 @@
+//
+// Created by Иван Лепёшкин on 03.04.2023.
+//
+
+#ifndef LAB3_BINARYSEARCHTREE_BINARYSEARCHTREE_H
+#define LAB3_BINARYSEARCHTREE_BINARYSEARCHTREE_H
+
+
+class BinarySearchTree {
+
+};
+
+
+#endif //LAB3_BINARYSEARCHTREE_BINARYSEARCHTREE_H
