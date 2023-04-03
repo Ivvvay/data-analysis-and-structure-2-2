@@ -7,4 +7,6 @@ add_executable(Lab3_BinarySearchTree main.cpp
         BinarySearchTree.cpp
         BinarySearchTree.h
         BinaryTree.cpp
-        BinaryTree.h)
+        BinaryTree.h
+        BinarySearchTreeTester.cpp
+        BinarySearchTreeTester.h)
