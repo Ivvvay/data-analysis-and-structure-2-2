@@ -23,6 +23,7 @@ class BinarySearchTree : public BinaryTree {
     Node* findNodeByKey(int key) override;
     int getNodeLevel(int key) override;
 
+    BinarySearchTree& operator=(const BinarySearchTree& other);
 };
 
 

@@ -153,3 +153,12 @@ BinaryTree::Node *BinarySearchTree::findNodeByKey(int key) {
 int BinarySearchTree::getNodeLevel(int key) {
     return BinaryTree::getNodeLevel(key);
 }
+
+BinarySearchTree &BinarySearchTree::operator=(const BinarySearchTree &other) {
+    if (this != &other) {
+        clear();
+        if (other.getRoot() != nullptr)
+            _root = new Node(*other.getRoot());
+    }
+    return *this;
+}
