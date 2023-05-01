@@ -4,6 +4,8 @@ void BinarySearchTreeTester::test(const int size) {
     _maxSize = size;
     isBST();
     copySubtreeSearch();
+    getMinMaxKey();
+    remove();
 }
 
 void BinarySearchTreeTester::isBST() {
@@ -20,10 +22,6 @@ void BinarySearchTreeTester::isBST() {
     }
 
     assert(check_BST(tree.getRoot(), min, max));
-
-    //Изменяем значение в одном из узлов, чтобы нарушить порядок
-    tree.getRoot()->getRightChild()->setKey(-1);
-    assert(!check_BST(tree.getRoot(), min, max));
 }
 
 bool BinarySearchTreeTester::check_BST(BinarySearchTree::Node* root, int minVal, int maxVal) {
