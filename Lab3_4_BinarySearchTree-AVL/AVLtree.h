@@ -8,6 +8,9 @@ public:
     AVLtree(const AVLtree& other);
     explicit AVLtree(Node* newRoot);
     ~AVLtree() override = default;
+
+    AVLtree copySubtree(int key);
+    Node* copySubtree(const Node* node) const override;
 };
 
 
