@@ -21,18 +21,21 @@ void BinarySearchTreeTester::isBST() {
         tree.addNode(key);
     }
 
-    assert(check_BST(tree.getRoot(), min, max));
+    check_BST(tree);
 }
 
-bool BinarySearchTreeTester::check_BST(BinarySearchTree::Node* root, int minVal, int maxVal) {
-    if (root == nullptr) {
-        return true;
+void BinarySearchTreeTester::check_BST(BinaryTree &tree) {
+    assert(isBST(tree));
+}
+
+bool BinarySearchTreeTester::isBST(BinaryTree &tree) {
+    std::vector<int> keys = tree.getKeys();
+
+    for (int i = 1; i < keys.size(); i++) {
+        if (keys[i] < keys[i-1])
+            return false;
     }
-    if (root->getKey() < minVal || root->getKey() > maxVal) {
-        return false;
-    }
-    return check_BST(root->getLeftChild(), minVal, root->getKey() - 1) &&
-           check_BST(root->getRightChild(), root->getKey(), maxVal);
+    return true;
 }
 
 void BinarySearchTreeTester::copySubtreeSearch() {

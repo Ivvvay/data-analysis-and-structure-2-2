@@ -22,7 +22,7 @@ BinarySearchTree BinarySearchTree::copySubtreeSearch(int key) {
     return BinarySearchTree(newRoot);
 }
 
-BinaryTree::Node *BinarySearchTree::copySubtree(const BinaryTree::Node *node) const {
+BinaryTree::Node *BinarySearchTree::copySubtree(const Node *node) const {
     return BinaryTree::copySubtree(node);
 }
 
@@ -48,7 +48,7 @@ int BinarySearchTree::getMaxKey() {
     return current->getKey();
 }
 
-BinaryTree::Node *BinarySearchTree::addNode(BinaryTree::Node *root, int key) {
+BinaryTree::Node *BinarySearchTree::addNode(Node *root, int key) {
     if (!root) {
         root = new Node(key);
     } else if (key < root->getKey()) {

@@ -4,6 +4,8 @@
 
 class BinarySearchTree : public BinaryTree {
 public:
+    using BinaryTree::Node;
+
     BinarySearchTree();
     BinarySearchTree(const BinarySearchTree& other);
     explicit BinarySearchTree(Node* newRoot);
