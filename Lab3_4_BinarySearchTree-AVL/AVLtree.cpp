@@ -41,6 +41,42 @@ BinaryTree::Node *AVLtree::addNode(Node *root, int key) {
     return root;
 }
 
+bool AVLtree::removeNode(int key) {
+    if (!_root)
+        return false;
+
+    bool result = false;
+    _root = removeNode(_root, key, result);
+    return result;
+}
+
+BinaryTree::Node *AVLtree::removeNode(Node *root, int key, bool &result) {
+    if (!root) {
+        return nullptr;
+    }
+    if (key < root->getKey()) {
+        root->setLeftChild(removeNode(root->getLeftChild(), key, result));
+    }
+    else if (key > root->getKey()) {
+        root->setRightChild(removeNode(root->getRightChild(), key, result));
+    } else {
+        Node* left = root->getLeftChild();
+        Node* right = root->getRightChild();
+        if (right == nullptr) {
+            delete root;
+            return left;
+        }
+        Node* minNode = findMin(right);
+        minNode->setRightChild(removeMin(right));
+        minNode->setLeftChild(left);
+        delete root;
+        root = balanceNode(minNode);
+        result = true;
+    }
+    root = balanceNode(root);
+    return root;
+}
+
 BinaryTree::Node *AVLtree::balanceNode(Node *node) {
     if (node == nullptr) {
         return nullptr;
@@ -90,4 +126,20 @@ BinaryTree::Node *AVLtree::leftRotate(Node *node) {
     newRoot->_height = 1 + std::max(getHeight(newRoot->getLeftChild()), getHeight(newRoot->getRightChild()));
 
     return newRoot;
+}
+
+BinaryTree::Node *AVLtree::findMin(Node *node) {
+    while (node->getLeftChild() != nullptr) {
+        node = node->getLeftChild();
+    }
+    return node;
+}
+
+BinaryTree::Node *AVLtree::removeMin(Node *node) {
+    if (node->getLeftChild() == nullptr) {
+        return node->getRightChild();
+    }
+    node->setLeftChild(removeMin(node->getLeftChild()));
+    node = balanceNode(node);
+    return node;
 }

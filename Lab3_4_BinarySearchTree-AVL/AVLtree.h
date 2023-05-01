@@ -15,10 +15,16 @@ public:
     Node* addNode(int key);
     Node* addNode(Node* root, int key);
 
+    bool removeNode(int key);
+    Node* removeNode(Node* root, int key, bool& result);
+
     Node* balanceNode(Node* node);
     int getBalanceFactor(Node* node);
     Node* rightRotate(Node* node);
     Node* leftRotate(Node* node);
+
+    Node* findMin(Node* node);
+    Node* removeMin(Node* node);
 };
 
 
