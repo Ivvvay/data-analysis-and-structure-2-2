@@ -18,6 +18,8 @@ public:
     bool removeNode(int key);
     Node* removeNode(Node* root, int key, bool& result);
 
+    AVLtree& operator=(const AVLtree& other);
+
     Node* balanceNode(Node* node);
     int getBalanceFactor(Node* node);
     Node* rightRotate(Node* node);

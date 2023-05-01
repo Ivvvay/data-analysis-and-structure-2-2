@@ -77,6 +77,12 @@ BinaryTree::Node *AVLtree::removeNode(Node *root, int key, bool &result) {
     return root;
 }
 
+AVLtree &AVLtree::operator=(const AVLtree &other) {
+    if (this != &other)
+        BinarySearchTree::operator=(other);
+    return *this;
+}
+
 BinaryTree::Node *AVLtree::balanceNode(Node *node) {
     if (node == nullptr) {
         return nullptr;
