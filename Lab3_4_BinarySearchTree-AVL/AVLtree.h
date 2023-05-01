@@ -11,6 +11,14 @@ public:
 
     AVLtree copySubtree(int key);
     Node* copySubtree(const Node* node) const override;
+
+    Node* addNode(int key);
+    Node* addNode(Node* root, int key);
+
+    Node* balanceNode(Node* node);
+    int getBalanceFactor(Node* node);
+    Node* rightRotate(Node* node);
+    Node* leftRotate(Node* node);
 };
 
 
