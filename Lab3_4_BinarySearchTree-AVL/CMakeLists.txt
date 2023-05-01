@@ -9,4 +9,10 @@ add_executable(Lab3_4_BinarySearchTree-AVL main.cpp
         BinaryTree.cpp
         BinaryTree.h
         BinarySearchTreeTester.cpp
-        BinarySearchTreeTester.h)
+        BinarySearchTreeTester.h
+        AVLtree.cpp
+        AVLtree.h
+        AVLtester.cpp
+        AVLtester.h
+        BinaryTreeTester.cpp
+        BinaryTreeTester.h)

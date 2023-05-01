@@ -1,7 +1,7 @@
 #include "BinaryTree.h"
 
-BinaryTree::Node::Node(int key, Node *leftChild, Node *rightChild) :
-        _key(key), _leftChild(leftChild), _rightChild(rightChild) {}
+BinaryTree::Node::Node(int key, Node *leftChild, Node *rightChild, int height) :
+        _key(key), _leftChild(leftChild), _rightChild(rightChild), _height(height) {}
 
 int BinaryTree::Node::getKey() const {
     return _key;
@@ -233,14 +233,15 @@ void BinaryTree::removeNode(Node* node) {
 BinaryTree::Node* BinaryTree::findNodeByKey(int key) {
     Node* nodeToRemove = findNodeByKey(key, _root);
     if (nodeToRemove == nullptr)
-        throw std::runtime_error("The key is not in the tree");
+        return nullptr;
     return nodeToRemove;
 }
 
 BinaryTree::Node* BinaryTree::findNodeByKey(int key, Node* currentNode) {
-    if (currentNode == nullptr || currentNode->getKey() == key) {
+    if (currentNode == nullptr)
+        return nullptr;
+    if (currentNode->getKey() == key)
         return currentNode;
-    }
     Node* leftResult = findNodeByKey(key, currentNode->getLeftChild());
     if (leftResult != nullptr)
         return leftResult;
@@ -327,7 +328,7 @@ void BinaryTree::inorderTraversal(const Node *node, std::vector<int> &keys) {
 }
 
 void BinaryTree::printTree() const {
-    printTree(_root, 1);
+    printTree(_root, 0);
 }
 
 void BinaryTree::printTree(const Node *node, int indent) const {
