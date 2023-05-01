@@ -3,7 +3,11 @@
 #include "BinarySearchTree.h"
 
 class AVLtree : public BinarySearchTree {
-
+public:
+    AVLtree();
+    AVLtree(const AVLtree& other);
+    explicit AVLtree(Node* newRoot);
+    ~AVLtree() override = default;
 };
 
 
