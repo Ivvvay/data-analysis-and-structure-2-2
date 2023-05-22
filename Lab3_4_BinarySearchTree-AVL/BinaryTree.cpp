@@ -73,8 +73,11 @@ void BinaryTree::deleteSubtree(Node *node) {
 
     deleteSubtree(node->getLeftChild());
     deleteSubtree(node->getRightChild());
+
     node->setLeftChild(nullptr);
     node->setRightChild(nullptr);
+
+    //delete node;
 }
 
 BinaryTree::Node* BinaryTree::copyTree(Node* node) const {
@@ -86,7 +89,7 @@ BinaryTree::Node* BinaryTree::copyTree(Node* node) const {
 }
 
 bool BinaryTree::isEmpty() const {
-    return !_root;
+    return (_root == nullptr);
 }
 
 BinaryTree BinaryTree::copySubtree(int key) {
@@ -138,14 +141,14 @@ int BinaryTree::getSize(const Node *node) const {
 
 int BinaryTree::getMinKey() {
     std::vector<int> keys = getKeys();
-    if (keys.empty()) throw std::runtime_error("Tree is empty");
+    if (keys.empty()) throw std::logic_error("Tree is empty");
     auto min_element = std::min_element(keys.begin(), keys.end());
     return *min_element;
 }
 
 int BinaryTree::getMaxKey() {
     std::vector<int> keys = getKeys();
-    if (keys.empty()) throw std::runtime_error("Tree is empty");
+    if (keys.empty()) throw std::logic_error("Tree is empty");
     auto max_element = std::max_element(keys.begin(), keys.end());
     return *max_element;
 }
