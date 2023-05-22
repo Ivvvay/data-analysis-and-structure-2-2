@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <unordered_map>
 
 class HuffmanCoding {
 public:
@@ -33,7 +34,14 @@ public:
     HuffmanCoding();
     ~HuffmanCoding();
 
+    void build(const std::string& text);
+    double encode(const std::string& inputFile, const std::string& outputFile);
+    bool decode(const std::string& inputFile, const std::string& outputFile);
 
+private:
+    void buildFrequencyTable(const std::string& text,
+                             std::unordered_map<std::string, int>& frequencyTable);
+    void buildTree(const std::unordered_map<std::string, int>& frequencyTable);
 
 private:
     Node* _root = nullptr;
