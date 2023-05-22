@@ -6,13 +6,17 @@
 class AVLtester : public BinarySearchTreeTester {
 public:
     AVLtester() = default;
-    ~AVLtester() = default;
-    void test(const int size);
+    ~AVLtester() override = default;
 
+    void test(const int size) override;
 protected:
-    void check_AVL(AVLtree &tree);
-private:
-    void isAVL();
+    BinaryTree *allocateTree() override;
+    void check_addAndCount(const BinaryTree &tree, const int size) override;
+    void check_assign(const BinaryTree *tree1, const BinaryTree *tree2) override;
+    void check_remove(const BinaryTree &tree, const int size) override;
+    void check_clear(const BinaryTree &tree) override;
+
+    //void isAVL();
 };
 
 
