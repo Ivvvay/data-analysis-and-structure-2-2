@@ -9,9 +9,9 @@ public:
     BinarySearchTree();
     BinarySearchTree(const BinarySearchTree& other);
     explicit BinarySearchTree(Node* newRoot);
-    ~BinarySearchTree() override;
+    ~BinarySearchTree() override = default;
 
-    BinarySearchTree copySubtreeSearch(int key);
+    BinarySearchTree copySubtree(int key);
     Node* copySubtree(const Node* node) const override;
 
     int getMinKey() override;
@@ -20,13 +20,13 @@ public:
     Node* addNode(int key) override;
     Node* addNode(Node* root, int key) override;
 
-    bool removeNodeSearch(int key);
-    Node* getSuccessor(Node* node);
+    bool removeNode(int key) override;
+    Node* getSuccessor(Node* node) override;
 
     Node* findNodeByKey(int key) override;
     int getNodeLevel(int key) override;
 
-    BinarySearchTree& operator=(const BinarySearchTree& other);
+    BinarySearchTree& operator=(const BinarySearchTree& other) = default;
 };
 
 

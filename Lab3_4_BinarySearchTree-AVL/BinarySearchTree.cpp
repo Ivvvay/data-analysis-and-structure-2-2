@@ -6,12 +6,10 @@ BinarySearchTree::BinarySearchTree(const BinarySearchTree &other) : BinaryTree(o
 
 BinarySearchTree::BinarySearchTree(Node* newRoot) : BinaryTree(newRoot) {}
 
-BinarySearchTree::~BinarySearchTree() = default;
-
-BinarySearchTree BinarySearchTree::copySubtreeSearch(int key) {
+BinarySearchTree BinarySearchTree::copySubtree(int key) {
     Node* node = findNodeByKey(key);
     if (!node)
-        return BinarySearchTree();
+        return BinarySearchTree(); // {}
 
     Node* newRoot = new Node(node->getKey());
     if (node->getLeftChild())
@@ -66,7 +64,7 @@ BinaryTree::Node *BinarySearchTree::addNode(int key) {
         return _root = new Node(key);
 }
 
-bool BinarySearchTree::removeNodeSearch(int key) {
+bool BinarySearchTree::removeNode(int key) {
     Node* parent = nullptr;
     Node* current = _root;
     bool isLeftChild = false;
@@ -152,13 +150,4 @@ BinaryTree::Node *BinarySearchTree::findNodeByKey(int key) {
 
 int BinarySearchTree::getNodeLevel(int key) {
     return BinaryTree::getNodeLevel(key);
-}
-
-BinarySearchTree &BinarySearchTree::operator=(const BinarySearchTree &other) {
-    if (this != &other) {
-        clear();
-        if (other.getRoot() != nullptr)
-            _root = new Node(*other.getRoot());
-    }
-    return *this;
 }
