@@ -4,6 +4,7 @@
 #include <fstream>
 #include <list>
 #include <unordered_map>
+#include <bitset>
 
 class HuffmanCoding {
 public:
@@ -42,6 +43,11 @@ private:
     void buildFrequencyTable(const std::string& text,
                              std::unordered_map<std::string, int>& frequencyTable);
     void buildTree(const std::unordered_map<std::string, int>& frequencyTable);
+
+    void buildCodeTable(Node* node, const std::string& code,
+                        std::unordered_map<std::string, std::string>& codeTable);
+    void encodeText(const std::string& text, const std::unordered_map<std::string,
+                    std::string>& codeTable, std::string& encodedText);
 
 private:
     Node* _root = nullptr;
