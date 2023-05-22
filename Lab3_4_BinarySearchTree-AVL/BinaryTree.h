@@ -53,18 +53,21 @@ public:
     virtual Node* addNode(Node* root, int key);
     virtual bool removeNode(int key); //- удаление узла из дерева по ключу (возвращает true, если узел был удалён);
     void removeNode(Node* node);
+    bool removeRoot();
+    virtual Node* getSuccessor(Node* node);
+
     virtual Node* findNodeByKey(int key);//- поиск узла по ключу
     Node* findNodeByKey(int key, Node* currentNode);
     Node* findParent(Node* node, Node* current); //- поиск предков
 
-    bool isBalanced(); //- проверка дерева на сбалансированность (возвращает true, если дерево является сбалансированным:
-    virtual bool isBalanced(const Node* node); //высоты правого и левого поддеревьев отличаются не более, чем на единицу, и сами поддеревья также являются сбалансированными);
+    bool isBalanced() const; //- проверка дерева на сбалансированность (возвращает true, если дерево является сбалансированным:
+    virtual bool isBalanced(const Node* node) const; //высоты правого и левого поддеревьев отличаются не более, чем на единицу, и сами поддеревья также являются сбалансированными);
     int getSum(); //- получение суммы всех ключей дерева;
     int getSum(const Node* node);
     virtual int getNodeLevel(int key);//- получение уровня вершины по ключу (возвращает индекс уровня или -1, если вершина не найдена);
     int getNodeLevel(int key, const Node* node, int level = 0);
-    std::vector<int> getKeys(); //- получение вектора  содержащего все ключи дерева (обход вершин производить любым способом - Л-К-П);
-    void inorderTraversal(const Node* node, std::vector<int>& keys);
+    std::vector<int> getKeys() const; //- получение вектора  содержащего все ключи дерева (обход вершин производить любым способом - Л-К-П);
+    void inorderTraversal(const Node* node, std::vector<int>& keys) const;
 
     void printTree() const; //- вывод в консоль дерева в горизонтальном виде;
     void printTree(const Node* node, int indent) const;
@@ -72,6 +75,7 @@ public:
     void printLeaves(const Node* node) const;
 
     BinaryTree& operator=(const BinaryTree& other); //- оператор присваивания;
+    void copyNodes(Node* newNode, const Node* otherNode) const;
 
 protected:
     Node* _root = nullptr;

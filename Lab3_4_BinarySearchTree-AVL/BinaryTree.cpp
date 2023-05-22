@@ -180,14 +180,12 @@ bool BinaryTree::removeNode(int key) {
     }
     removeNode(nodeToRemove);
     return true;
-
 }
 
 void BinaryTree::removeNode(Node* node) {
     // случай, когда удаляемый узел - корень дерева
     if (node == _root) {
-        delete _root;
-        _root = nullptr;
+        removeRoot();
         return;
     }
 
@@ -233,6 +231,42 @@ void BinaryTree::removeNode(Node* node) {
     delete node;
 }
 
+bool BinaryTree::removeRoot() {
+    if (_root == nullptr) {
+        return false; // Дерево пустое
+    }
+
+    Node* oldRoot = getRoot();
+    if (_root->getLeftChild() == nullptr && _root->getRightChild() == nullptr) {
+        // Корень без потомков
+        _root = nullptr;
+    } else if (_root->getLeftChild() == nullptr) {
+        // Корень справа имеет потомка
+        _root = _root->getRightChild();
+    } else if (_root->getRightChild() == nullptr) {
+        // Корень слева имеет потомка
+        _root = _root->getLeftChild();
+    } else {
+        // Корень имеет оба потомка
+        Node* successor = getSuccessor(_root); // Находим преемника
+        _root->setKey(successor->getKey()); // Ключ преемника копируется в корень
+        removeNode(successor); // Удаляем преемника
+    }
+    return true;
+}
+
+BinaryTree::Node* BinaryTree::getSuccessor(Node* node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+
+    Node* current = node->getRightChild();
+    while (current != nullptr && current->getLeftChild() != nullptr) {
+        current = current->getLeftChild();
+    }
+    return current;
+}
+
 BinaryTree::Node* BinaryTree::findNodeByKey(int key) {
     Node* nodeToRemove = findNodeByKey(key, _root);
     if (nodeToRemove == nullptr)
@@ -272,11 +306,11 @@ BinaryTree::Node* BinaryTree::findParent(Node* node, Node* current) {
     return parent;
 }
 
-bool BinaryTree::isBalanced() {
+bool BinaryTree::isBalanced() const {
     return isBalanced(_root);
 }
 
-bool BinaryTree::isBalanced(const Node *node) {
+bool BinaryTree::isBalanced(const Node *node) const {
     if (node == nullptr)
         return true;
 
@@ -316,13 +350,13 @@ int BinaryTree::getNodeLevel(int key, const Node *node, int level) {
     return getNodeLevel(key,node->getRightChild(), level + 1);
 }
 
-std::vector<int> BinaryTree::getKeys() {
+std::vector<int> BinaryTree::getKeys() const {
     std::vector<int> keys;
     inorderTraversal(_root, keys);
     return keys;
 }
 
-void BinaryTree::inorderTraversal(const Node *node, std::vector<int> &keys) {
+void BinaryTree::inorderTraversal(const Node *node, std::vector<int> &keys) const {
     if (!node) return;
 
     inorderTraversal(node->getLeftChild(), keys);
@@ -381,8 +415,24 @@ void BinaryTree::printLeaves(const Node *node) const {
 BinaryTree &BinaryTree::operator=(const BinaryTree &other) {
     if (this != &other) {
         clear();
-        if (other.getRoot() != nullptr)
-            _root = new Node(*other.getRoot());
+        if (other.getRoot() != nullptr) {
+            _root = new Node(other.getRoot()->getKey());
+            copyNodes(_root, other._root);
+        }
     }
     return *this;
+}
+
+
+void BinaryTree::copyNodes(Node* newNode, const Node* otherNode) const
+{
+    if (otherNode->getLeftChild() != nullptr) {
+        newNode->setLeftChild(new Node(otherNode->getLeftChild()->getKey()));
+        copyNodes(newNode->getLeftChild(), otherNode->getLeftChild());
+    }
+
+    if (otherNode->getRightChild() != nullptr) {
+        newNode->setRightChild(new Node(otherNode->getRightChild()->getKey()));
+        copyNodes(newNode->getRightChild(), otherNode->getRightChild());
+    }
 }
