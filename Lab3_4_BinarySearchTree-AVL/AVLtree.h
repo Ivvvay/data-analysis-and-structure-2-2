@@ -12,14 +12,15 @@ public:
     AVLtree copySubtree(int key);
     Node* copySubtree(const Node* node) const override;
 
-    Node* addNode(int key);
-    Node* addNode(Node* root, int key);
+    Node* addNode(int key) override;
+    Node* addNode(Node* root, int key) override;
 
-    bool removeNode(int key);
+    bool removeNode(int key) override;
     Node* removeNode(Node* root, int key, bool& result);
 
     AVLtree& operator=(const AVLtree& other);
 
+private:
     Node* balanceNode(Node* node);
     int getBalanceFactor(Node* node);
     Node* rightRotate(Node* node);
