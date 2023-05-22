@@ -49,7 +49,30 @@ double HuffmanCoding::encode(const std::string &inputFile, const std::string &ou
 }
 
 bool HuffmanCoding::decode(const std::string &inputFile, const std::string &outputFile) {
+    std::ifstream input(inputFile, std::ios::binary);
+    std::ofstream output(outputFile);
 
+    if (!input || !output) {
+        std::cerr << "Error opening files." << std::endl;
+        return false;
+    }
+
+    std::string encodedText((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    input.close();
+
+    std::bitset<8> padSize(encodedText.substr(0, 8));
+    int padLength = padSize.to_ulong();
+    encodedText = encodedText.substr(8 + padLength);
+
+    int index = 0;
+    std::string decodedText;
+    while (index < encodedText.length())
+        decodeText(encodedText, _root, index, decodedText);
+
+    output.write(decodedText.c_str(), decodedText.length());
+    output.close();
+
+    return true;
 }
 
 void HuffmanCoding::buildFrequencyTable(const std::string &text, std::unordered_map<std::string, int> &frequencyTable) {
@@ -62,9 +85,8 @@ void HuffmanCoding::buildFrequencyTable(const std::string &text, std::unordered_
 void HuffmanCoding::buildTree(const std::unordered_map<std::string, int> &frequencyTable) {
     std::list<Node*> nodes;
 
-    for (const auto& pair : frequencyTable) {
+    for (const auto& pair : frequencyTable)
         nodes.push_back(new Node(pair.first, pair.second));
-    }
 
     while (nodes.size() > 1) {
         nodes.sort([](const Node* a, const Node* b) {
@@ -103,4 +125,19 @@ void HuffmanCoding::encodeText(const std::string &text, const std::unordered_map
         std::string symbol(1, c);
         encodedText += codeTable.at(symbol);
     }
+}
+
+void HuffmanCoding::decodeText(const std::string &encodedText, HuffmanCoding::Node *node,
+                               int &index, std::string &decodedText) {
+    if (!node->getLeft() && !node->getRight()) {
+        decodedText += node->getData();
+        return;
+    }
+    if (index >= encodedText.length())
+        return;
+
+    if (encodedText[index] == '0')
+        decodeText(encodedText, node->getLeft(), ++index, decodedText);
+    else
+        decodeText(encodedText, node->getRight(), ++index, decodedText);
 }

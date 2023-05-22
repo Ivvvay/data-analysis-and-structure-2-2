@@ -49,6 +49,8 @@ private:
     void encodeText(const std::string& text, const std::unordered_map<std::string,
                     std::string>& codeTable, std::string& encodedText);
 
+    void decodeText(const std::string& encodedText,Node* node,
+                    int& index, std::string& decodedText);
 private:
     Node* _root = nullptr;
 };
