@@ -32,6 +32,11 @@ public:
 
     HuffmanCoding();
     ~HuffmanCoding();
+
+
+
+private:
+    Node* _root = nullptr;
 };
 
 
