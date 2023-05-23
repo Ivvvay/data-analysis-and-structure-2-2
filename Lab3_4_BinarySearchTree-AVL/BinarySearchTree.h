@@ -12,7 +12,7 @@ public:
     ~BinarySearchTree() override = default;
 
     BinarySearchTree copySubtree(int key);
-    Node* copySubtree(const Node* node) const override;
+    Node* rootOfCopySubtree(int key) override;
 
     int getMinKey() override;
     int getMaxKey() override;

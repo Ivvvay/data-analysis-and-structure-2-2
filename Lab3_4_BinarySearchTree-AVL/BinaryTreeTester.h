@@ -20,7 +20,7 @@ protected:
     virtual void check_remove(const BinaryTree &tree, const int size);
     virtual void check_clear(const BinaryTree &tree);
     void check_height(const BinaryTree &tree, const int size);
-    //virtual void check_copySubtreeAndDelete(const BinaryTree &copySubtree, const BinaryTree &copySubtreeForDel, const BinaryTree &longTree);
+    virtual void check_copySubtreeAndDelete(const BinaryTree &copySubtree, const BinaryTree &copySubtreeForDel, const BinaryTree &longTree);
 
 protected:
     virtual void deallocateTree(BinaryTree *tree);
@@ -36,7 +36,7 @@ protected:
     void height_longOnlyRightSubtree();
     void height_longOnlyLeftAndRightSubtrees();
     void height_longRandomZigzagSubtrees();
-    //void copySubtreeAndDelete();
+    void copySubtreeAndDelete();
     std::vector<const BinaryTree::Node *> treeNodes(const BinaryTree *tree);
 
 protected:

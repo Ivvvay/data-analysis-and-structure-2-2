@@ -93,9 +93,13 @@ bool BinaryTree::isEmpty() const {
 }
 
 BinaryTree BinaryTree::copySubtree(int key) {
+    return { rootOfCopySubtree(key) };
+}
+
+BinaryTree::Node* BinaryTree::rootOfCopySubtree(int key) {
     Node* node = findNodeByKey(key);
     if (!node)
-        return BinaryTree();
+        return nullptr;
 
     Node* newRoot = new Node(node->getKey());
     if (node->getLeftChild())
@@ -103,7 +107,7 @@ BinaryTree BinaryTree::copySubtree(int key) {
     if (node->getRightChild())
         newRoot->setRightChild(copySubtree(node->getRightChild()));
 
-    return BinaryTree(newRoot);
+    return newRoot;
 }
 
 BinaryTree::Node* BinaryTree::copySubtree(const Node *node) const {

@@ -7,21 +7,10 @@ BinarySearchTree::BinarySearchTree(const BinarySearchTree &other) : BinaryTree(o
 BinarySearchTree::BinarySearchTree(Node* newRoot) : BinaryTree(newRoot) {}
 
 BinarySearchTree BinarySearchTree::copySubtree(int key) {
-    Node* node = findNodeByKey(key);
-    if (!node)
-        return BinarySearchTree(); // {}
-
-    Node* newRoot = new Node(node->getKey());
-    if (node->getLeftChild())
-        newRoot->setLeftChild(copySubtree(node->getLeftChild()));
-    if (node->getRightChild())
-        newRoot->setRightChild(copySubtree(node->getRightChild()));
-
-    return BinarySearchTree(newRoot);
+    return BinarySearchTree(rootOfCopySubtree(key));
 }
-
-BinaryTree::Node *BinarySearchTree::copySubtree(const Node *node) const {
-    return BinaryTree::copySubtree(node);
+BinaryTree::Node *BinarySearchTree::rootOfCopySubtree(int key) {
+    return BinaryTree::rootOfCopySubtree(key);
 }
 
 int BinarySearchTree::getMinKey() {

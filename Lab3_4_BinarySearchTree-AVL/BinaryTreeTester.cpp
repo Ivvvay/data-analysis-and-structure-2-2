@@ -8,7 +8,7 @@ void BinaryTreeTester::test(const int size) {
     remove();
     clear();
     height();
-    //copySubtreeAndDelete();
+    copySubtreeAndDelete();
 }
 
 BinaryTree *BinaryTreeTester::allocateTree() {
@@ -268,7 +268,6 @@ void BinaryTreeTester::height_longRandomZigzagSubtrees() {
     deallocateTree(longTree);
 }
 
-/*
 void BinaryTreeTester::copySubtreeAndDelete() {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -323,4 +322,4 @@ void BinaryTreeTester::check_copySubtreeAndDelete(const BinaryTree &copySubtree,
                                                   const BinaryTree &copySubtreeForDel,
                                                   const BinaryTree &longTree) {
     assert((copySubtree.getSize() + copySubtreeForDel.getSize()) == longTree.getSize());
-}*/
+}

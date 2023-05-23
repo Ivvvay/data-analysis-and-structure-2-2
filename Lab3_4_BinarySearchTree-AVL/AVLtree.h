@@ -10,7 +10,7 @@ public:
     ~AVLtree() override = default;
 
     AVLtree copySubtree(int key);
-    Node* copySubtree(const Node* node) const override;
+    Node* rootOfCopySubtree(int key) override;
 
     Node* addNode(int key) override;
     Node* addNode(Node* root, int key) override;

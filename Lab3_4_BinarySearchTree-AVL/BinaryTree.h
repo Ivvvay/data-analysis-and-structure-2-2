@@ -38,7 +38,8 @@ public:
     bool isEmpty() const; //- isEmpty (возвращает true, если дерево пусто);
 
     BinaryTree copySubtree(int key); //- копирование поддерева узла (возвращает новый объект класса);
-    virtual Node* copySubtree(const Node* node) const;
+    Node* copySubtree(const Node* node) const;
+    virtual Node* rootOfCopySubtree(int key);
     Node* copyTree(Node* node) const;
 
     int getHeight() const; //- получение высоты дерева;
