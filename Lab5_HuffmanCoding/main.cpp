@@ -1,6 +1,13 @@
 #include "HuffmanCoding.h"
 
+void test(std::string text);
+
 int main() {
+    test("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    return 0;
+}
+
+void test(std::string text) {
     HuffmanCoding huffman;
 
     // Пример использования
@@ -8,7 +15,7 @@ int main() {
     std::string encodedFile = "encoded.bin";
     std::string decodedFile = "decoded.txt";
 
-    std::string inputText = "Hello World!";
+    std::string inputText = text;
     std::ofstream inputFileStream(inputFile);
     inputFileStream << inputText;
     inputFileStream.close();
@@ -27,6 +34,4 @@ int main() {
     } else {
         std::cout << "Decoding failed." << std::endl;
     }
-
-    return 0;
 }

@@ -44,7 +44,7 @@ double HuffmanCoding::encode(const std::string &inputFile, const std::string &ou
     output.write(outputText.c_str(), outputText.length());
     output.close();
 
-    double compressionRatio = static_cast<double>(outputText.length()) / (text.length() * sizeof(char));
+    double compressionRatio = static_cast<double>(outputText.length()) / static_cast<double>(text.length() * 8);
     return compressionRatio;
 }
 
@@ -119,8 +119,8 @@ void HuffmanCoding::buildCodeTable(HuffmanCoding::Node *node, const std::string 
     buildCodeTable(node->getRight(), code + "1", codeTable);
 }
 
-void HuffmanCoding::encodeText(const std::string &text, const std::unordered_map<std::string,
-        std::string> &codeTable, std::string &encodedText) {
+void HuffmanCoding::encodeText(const std::string &text, const std::unordered_map<std::string, std::string> &codeTable,
+                               std::string &encodedText) {
     for (char c : text) {
         std::string symbol(1, c);
         encodedText += codeTable.at(symbol);
