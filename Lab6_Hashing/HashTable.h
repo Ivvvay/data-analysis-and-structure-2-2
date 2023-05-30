@@ -172,6 +172,23 @@ public:
         rehash();
     }
 
+    void resize(int newSize) {
+        _capacity = newSize;
+        rehash();
+    }
+    
+    HashTable& operator=(const HashTable& other) {
+        if (this != &other) {
+            clear();
+            delete _hashFunction;
+            _capacity = other._capacity;
+            _hashFunction = other._hashFunction;
+            _table.resize(_capacity, nullptr);
+            copyTable(other);
+        }
+        return *this;
+    }
+
     void rehash() {
         std::vector<HashNode*> oldTable = _table;
         int oldCapacity = _capacity;
