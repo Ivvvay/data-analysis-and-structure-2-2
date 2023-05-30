@@ -151,6 +151,45 @@ public:
         }
         std::cout << std::endl;
     }
+    void changeHashFunction(int hashFunctionIndex) {
+        delete _hashFunction;
+
+        switch (hashFunctionIndex) {
+            case 1:
+                _hashFunction = new HashFunction1();
+                break;
+            case 2:
+                _hashFunction = new HashFunction2();
+                break;
+            case 3:
+                _hashFunction = new HashFunction3();
+                break;
+            default:
+                _hashFunction = new HashFunction1();
+                break;
+        }
+
+        rehash();
+    }
+
+    void rehash() {
+        std::vector<HashNode*> oldTable = _table;
+        int oldCapacity = _capacity;
+
+        _table.clear();
+        _table.resize(_capacity, nullptr);
+        _size = 0;
+
+        for (size_t i = 0; i < oldCapacity; i++) {
+            HashNode* current = oldTable[i];
+            while (current != nullptr) {
+                insert(current->_key, current->_value);
+                HashNode* temp = current;
+                current = current->_next;
+                delete temp;
+            }
+        }
+    }
 
 private:
     // Внутренний класс для хранения пар "ключ-значение"
