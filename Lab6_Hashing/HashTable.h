@@ -63,7 +63,7 @@ public:
     HashTable() : _size(0), _capacity(8), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
     }
-    
+
     explicit HashTable(int tableSize) : _size(0), _capacity(tableSize), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
     }
@@ -122,6 +122,19 @@ public:
             previous = current;
             current = current->_next;
         }
+    }
+
+    bool contains(const KeyType& key) const {
+        int hash = _hashFunction->computeHash(key, _capacity);
+        HashNode* current = _table[hash];
+
+        while (current != nullptr) {
+            if (current->_key == key) {
+                return true;
+            }
+            current = current->_next;
+        }
+        return false;
     }
 
     void printTable() const {
