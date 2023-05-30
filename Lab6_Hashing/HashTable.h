@@ -58,6 +58,18 @@ public:
 
 template <typename KeyType, typename ValueType>
 class HashTable {
+public:
+    // Конструкторы
+    HashTable() : _size(0), _capacity(8), _hashFunction(new HashFunction1()) {
+        _table.resize(_capacity, nullptr);
+    }
+    explicit HashTable(int tableSize) : _size(0), _capacity(tableSize), _hashFunction(new HashFunction1()) {
+        _table.resize(_capacity, nullptr);
+    }
+    HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction) {
+        copyTable(other);
+    }
+    
 
 private:
     // Внутренний класс для хранения пар "ключ-значение"
