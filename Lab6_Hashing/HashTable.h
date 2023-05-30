@@ -69,7 +69,11 @@ public:
     HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction) {
         copyTable(other);
     }
-    
+
+    // Деструктор
+    ~HashTable() {
+        clear();
+    }
 
 private:
     // Внутренний класс для хранения пар "ключ-значение"
@@ -88,6 +92,36 @@ private:
     int _size;
     int _capacity;
     HashFunction* _hashFunction;
+
+    // Вспомогательные методы
+    void clear() {
+        for (int i = 0; i < _capacity; i++) {
+            HashNode* current = _table[i];
+            while (current != nullptr) {
+                HashNode* temp = current;
+                current = current->_next;
+                delete temp;
+            }
+            _table[i] = nullptr;
+        }
+        _size = 0;
+    }
+    
+    void copyTable(const HashTable& other) {
+        _table.resize(other._capacity, nullptr);
+        _size = other._size;
+        _capacity = other._capacity;
+
+        for (int i = 0; i < other._capacity; i++) {
+            HashNode* current = other._table[i];
+            while (current != nullptr) {
+                auto* newNode = new HashNode(current->_key, current->_value);
+                newNode->_next = _table[i];
+                _table[i] = newNode;
+                current = current->_next;
+            }
+        }
+    }
 };
 
 #endif //LAB6_HASHING_HASHTABLE_H
