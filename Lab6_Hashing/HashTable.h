@@ -75,6 +75,33 @@ public:
         clear();
     }
 
+    // Методы
+    void insert(const KeyType& key, const ValueType& value) {
+        int hash = _hashFunction->computeHash(key, _capacity);
+        auto* newNode = new HashNode(key, value);
+
+        if (_table[hash] == nullptr) {
+            _table[hash] = newNode;
+        } else {
+            HashNode* current = _table[hash];
+            while (current->_next != nullptr) {
+                if (current->_key == key) {
+                    current->_value = value;
+                    delete newNode;
+                    return;
+                }
+                current = current->_next;
+            }
+            if (current->_key == key) {
+                current->_value = value;
+                delete newNode;
+                return;
+            }
+            current->_next = newNode;
+        }
+        _size++;
+    }
+
 private:
     // Внутренний класс для хранения пар "ключ-значение"
     struct HashNode {
@@ -106,7 +133,7 @@ private:
         }
         _size = 0;
     }
-    
+
     void copyTable(const HashTable& other) {
         _table.resize(other._capacity, nullptr);
         _size = other._size;
