@@ -63,9 +63,11 @@ public:
     HashTable() : _size(0), _capacity(8), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
     }
+    
     explicit HashTable(int tableSize) : _size(0), _capacity(tableSize), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
     }
+
     HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction) {
         copyTable(other);
     }
@@ -100,6 +102,41 @@ public:
             current->_next = newNode;
         }
         _size++;
+    }
+    void remove(const KeyType& key) {
+        int hash = _hashFunction->computeHash(key, _capacity);
+        HashNode* current = _table[hash];
+        HashNode* previous = nullptr;
+
+        while (current != nullptr) {
+            if (current->_key == key) {
+                if (previous == nullptr) {
+                    _table[hash] = current->_next;
+                } else {
+                    previous->_next = current->_next;
+                }
+                delete current;
+                _size--;
+                return;
+            }
+            previous = current;
+            current = current->_next;
+        }
+    }
+
+    void printTable() const {
+        for (int i = 0; i < _capacity; i++) {
+            //if (_table[i] != nullptr) {
+            std::cout << "Hash: " << i << " - ";
+            HashNode* current = _table[i];
+            while (current != nullptr) {
+                std::cout << "(" << current->_key << ", " << current->_value << ")";
+                current = current->_next;
+            }
+            std::cout << std::endl;
+            //}
+        }
+        std::cout << std::endl;
     }
 
 private:
