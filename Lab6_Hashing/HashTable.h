@@ -1,6 +1,7 @@
 #ifndef LAB6_HASHING_HASHTABLE_H
 #define LAB6_HASHING_HASHTABLE_H
 #include <iostream>
+#include <vector>
 #include <cmath>
 
 // Указатель на интерфейс хеш-функции
@@ -176,7 +177,7 @@ public:
         _capacity = newSize;
         rehash();
     }
-    
+
     HashTable& operator=(const HashTable& other) {
         if (this != &other) {
             clear();
