@@ -1,0 +1,8 @@
+#ifndef LAB6_HASHING_HASHTABLE_H
+#define LAB6_HASHING_HASHTABLE_H
+#include <iostream>
+
+
+
+
+#endif //LAB6_HASHING_HASHTABLE_H
