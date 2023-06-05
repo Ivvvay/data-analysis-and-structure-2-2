@@ -1,0 +1,9 @@
+#ifndef LAB5_HUFFMANCODING_SET_H
+#define LAB5_HUFFMANCODING_SET_H
+
+class Set {
+
+};
+
+
+#endif //LAB5_HUFFMANCODING_SET_H
