@@ -41,3 +41,18 @@ Set Set::operator|=(const Set& other) {
 
     return *this;
 }
+
+bool Set::inSet(unsigned char symbol) {
+    int index = (int) symbol / 8;
+    int bit = (int) symbol % 8;
+
+    return (_setArray[index] & (1 << (7 - bit))) != 0;
+}
+
+void Set::add(unsigned char symbol) {
+    if (!inSet(symbol)) {
+        int index = (int) symbol / 8;
+        int bit = (int) symbol % 8;
+        _setArray[index] |= 1 << (7 - bit);
+    }
+}
