@@ -1,55 +1,130 @@
 #include "HuffmanCoding.h"
 
+HuffmanCoding::Node::Node() :
+        _symbols(Set()), _frequency(0),
+        _left(nullptr), _right(nullptr) {}
+
+HuffmanCoding::Node::Node(unsigned char symbol, int frequency) :
+        _symbols(Set(symbol)), _frequency(frequency),
+        _left(nullptr), _right(nullptr) {}
+
+HuffmanCoding::Node::Node(HuffmanCoding::Node *left, HuffmanCoding::Node *right) :
+        _symbols(left->_symbols | right->_symbols),
+        _frequency(left->_frequency + right->_frequency),
+        _left(left), _right(right) {}
+
+Set HuffmanCoding::Node::symbols() {
+    return _symbols;
+}
+
+int HuffmanCoding::Node::frequency() {
+    return _frequency;
+}
+
+HuffmanCoding::Node *HuffmanCoding::Node::left() const {
+    return _left;
+}
+
+HuffmanCoding::Node *HuffmanCoding::Node::right() const {
+    return _right;
+}
+
 HuffmanCoding::HuffmanCoding() : _root(nullptr) {}
 
 HuffmanCoding::~HuffmanCoding() {
-    delete _root;
+    _delete(_root);
 }
 
-void HuffmanCoding::build(const std::string &text) {
-    std::unordered_map<std::string, int> frequencyTable;
-    buildFrequencyTable(text, frequencyTable);
-    buildTree(frequencyTable);
+void HuffmanCoding::build(const std::string &inputFile) {
+    _delete(_root);
+
+    std::ifstream text(inputFile);
+    if (!text)
+        std::cerr << "Error opening files." << std::endl;
+
+    unsigned char symbols[256];
+    for (int i = 0; i < 256; i++)
+        symbols[i] = 0;
+
+    char ch;
+    while (text.get(ch))
+        symbols[(unsigned char) ch]++;
+
+    text.close();
+
+    std::vector<Node*> nodes;
+
+    for (int i = 0; i < 256; i++) {
+        if (symbols[i] != 0) {
+            Node* temp = new Node((unsigned char)i, symbols[i]);
+            nodes.push_back(temp);
+        }
+    }
+
+    std::sort(nodes.begin(), nodes.end(),[](Node* a, Node* b){
+        return a->frequency() < b->frequency();
+    });
+
+    while (nodes.size() > 1) {
+        Node* temp = new Node(nodes[0], nodes[1]);
+        nodes.erase(nodes.begin());
+        nodes.erase(nodes.begin());
+        nodes.push_back(temp);
+        std::sort(nodes.begin(), nodes.end(),[](Node* a, Node* b){
+            return a->frequency() < b->frequency();
+        });
+    }
+    _root = nodes[0];
 }
 
 double HuffmanCoding::encode(const std::string &inputFile, const std::string &outputFile) {
-    std::ifstream input(inputFile);
-    std::ofstream output(outputFile, std::ios::binary);
+    build(inputFile);
 
-    if (!input || !output) {
+    if (_root == nullptr)
+        return 0;
+
+    std::ifstream input(inputFile);
+    std::ofstream output(outputFile);
+
+    if (!input || !output)
         std::cerr << "Error opening files." << std::endl;
-        return -1;
+
+    int result_count_of_bits = 0;
+    int input_count_of_bits = 0;
+
+    char ch;
+    while (input.get(ch)) {
+        Node* temp = _root;
+        while (temp->left() != nullptr && temp->right() != nullptr) {
+            if (temp->left()->symbols().inSet(ch)){
+                temp = temp->left();
+                output << '0';
+            } else {
+                temp = temp->right();
+                output << '1';
+            }
+            result_count_of_bits++;
+        }
+        input_count_of_bits++;
     }
 
-    std::string text((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    if (_root->left() == nullptr && _root->right() == nullptr) {
+        for (int i = 0; i < input_count_of_bits; i++)
+            output << '1';
+        result_count_of_bits = input_count_of_bits;
+    }
+
     input.close();
-
-    std::unordered_map<std::string, int> frequencyTable;
-    buildFrequencyTable(text, frequencyTable);
-    buildTree(frequencyTable);
-
-    std::unordered_map<std::string, std::string> codeTable;
-    buildCodeTable(_root, "", codeTable);
-
-    std::string encodedText;
-    encodeText(text, codeTable, encodedText);
-
-    int padLength = 8 - (encodedText.length() % 8);
-    std::string padding = std::string(padLength, '0');
-    std::bitset<8> padSize(padLength);
-
-    std::string outputText;
-    outputText += padSize.to_string() + padding + encodedText;
-
-    output.write(outputText.c_str(), outputText.length());
     output.close();
 
-    double compressionRatio = static_cast<double>(outputText.length()) / static_cast<double>(text.length() * 8);
-    return compressionRatio;
+    return (double) result_count_of_bits / ((double) input_count_of_bits * 8);
 }
 
 bool HuffmanCoding::decode(const std::string &inputFile, const std::string &outputFile) {
-    std::ifstream input(inputFile, std::ios::binary);
+    if (_root == nullptr)
+        return false;
+
+    std::ifstream input(inputFile);
     std::ofstream output(outputFile);
 
     if (!input || !output) {
@@ -57,87 +132,37 @@ bool HuffmanCoding::decode(const std::string &inputFile, const std::string &outp
         return false;
     }
 
-    std::string encodedText((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    char ch;
+    Node* temp = _root;
+    while (input.get(ch)) {
+        switch (ch) {
+            case '0':
+                if(temp->left() != nullptr)
+                    temp = temp->left();
+                break;
+            case '1':
+                if(temp->right() != nullptr)
+                    temp = temp->right();
+                break;
+            default:
+                return false;
+        }
+        if (temp->left() == nullptr && temp->right() == nullptr) {
+            output << temp->symbols();
+            temp = _root;
+        }
+    }
+
     input.close();
-
-    std::bitset<8> padSize(encodedText.substr(0, 8));
-    int padLength = padSize.to_ulong();
-    encodedText = encodedText.substr(8 + padLength);
-
-    int index = 0;
-    std::string decodedText;
-    while (index < encodedText.length())
-        decodeText(encodedText, _root, index, decodedText);
-
-    output.write(decodedText.c_str(), decodedText.length());
     output.close();
 
     return true;
 }
 
-void HuffmanCoding::buildFrequencyTable(const std::string &text, std::unordered_map<std::string, int> &frequencyTable) {
-    for (char c : text) {
-        std::string symbol(1, c);
-        ++frequencyTable[symbol];
+void HuffmanCoding::_delete(HuffmanCoding::Node *root) {
+    if (root != nullptr) {
+        _delete(root->left());
+        _delete(root->right());
+        delete root;
     }
-}
-
-void HuffmanCoding::buildTree(const std::unordered_map<std::string, int> &frequencyTable) {
-    std::list<Node*> nodes;
-
-    for (const auto& pair : frequencyTable)
-        nodes.push_back(new Node(pair.first, pair.second));
-
-    while (nodes.size() > 1) {
-        nodes.sort([](const Node* a, const Node* b) {
-            return a->getFrequency() < b->getFrequency();
-        });
-
-        Node* left = nodes.front();
-        nodes.pop_front();
-
-        Node* right = nodes.front();
-        nodes.pop_front();
-
-        Node* parent = new Node(left->getData() + right->getData(), left->getFrequency() + right->getFrequency());
-        parent->setLeft(left);
-        parent->setRight(right);
-
-        nodes.push_back(parent);
-    }
-    _root = nodes.front();
-}
-
-void HuffmanCoding::buildCodeTable(HuffmanCoding::Node *node, const std::string &code,
-                                   std::unordered_map<std::string, std::string> &codeTable) {
-    if (!node->getLeft() && !node->getRight()) {
-        codeTable[node->getData()] = code;
-        return;
-    }
-
-    buildCodeTable(node->getLeft(), code + "0", codeTable);
-    buildCodeTable(node->getRight(), code + "1", codeTable);
-}
-
-void HuffmanCoding::encodeText(const std::string &text, const std::unordered_map<std::string, std::string> &codeTable,
-                               std::string &encodedText) {
-    for (char c : text) {
-        std::string symbol(1, c);
-        encodedText += codeTable.at(symbol);
-    }
-}
-
-void HuffmanCoding::decodeText(const std::string &encodedText, HuffmanCoding::Node *node,
-                               int &index, std::string &decodedText) {
-    if (!node->getLeft() && !node->getRight()) {
-        decodedText += node->getData();
-        return;
-    }
-    if (index >= encodedText.length())
-        return;
-
-    if (encodedText[index] == '0')
-        decodeText(encodedText, node->getLeft(), ++index, decodedText);
-    else
-        decodeText(encodedText, node->getRight(), ++index, decodedText);
 }
