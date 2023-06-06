@@ -4,7 +4,7 @@ int main() {
     HuffmanCoding huffman;
 
     std::string inputFile = "input.txt";
-    std::string encodedFile = "encoded.txt";
+    std::string encodedFile = "encoded.bin";
     std::string decodedFile = "decoded.txt";
 
     double compressionRatio = huffman.encode(inputFile, encodedFile);
