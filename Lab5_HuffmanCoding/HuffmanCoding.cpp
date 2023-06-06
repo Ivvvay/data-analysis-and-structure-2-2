@@ -42,21 +42,21 @@ void HuffmanCoding::build(const std::string &inputFile) {
     if (!text)
         std::cerr << "Error opening files." << std::endl;
 
-    unsigned char symbols[256];
+    int frequencies[256];
     for (int i = 0; i < 256; i++)
-        symbols[i] = 0;
+        frequencies[i] = 0;
 
     char ch;
     while (text.get(ch))
-        symbols[(unsigned char) ch]++;
+        frequencies[(unsigned char) ch]++;
 
     text.close();
 
     std::vector<Node*> nodes;
 
     for (int i = 0; i < 256; i++) {
-        if (symbols[i] != 0) {
-            Node* temp = new Node((unsigned char)i, symbols[i]);
+        if (frequencies[i] != 0) {
+            Node* temp = new Node((unsigned char)i, frequencies[i]);
             nodes.push_back(temp);
         }
     }
@@ -80,14 +80,17 @@ void HuffmanCoding::build(const std::string &inputFile) {
 double HuffmanCoding::encode(const std::string &inputFile, const std::string &outputFile) {
     build(inputFile);
 
-    if (_root == nullptr)
-        return 0;
 
     std::ifstream input(inputFile);
     std::ofstream output(outputFile);
 
-    if (!input || !output)
+    if (!input || !output) {
         std::cerr << "Error opening files." << std::endl;
+        return -1;
+    }
+
+    if (_root == nullptr)
+        return 0;
 
     int result_count_of_bits = 0;
     int input_count_of_bits = 0;
