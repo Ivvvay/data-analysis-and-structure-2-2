@@ -73,8 +73,6 @@ class HashTable {
 public:
     // Конструкторы
     HashTable() : HashTable(8) {}
-        _table.resize(_capacity, nullptr);
-    }
 
     explicit HashTable(int tableSize) : _size(0), _capacity(tableSize), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
@@ -87,10 +85,16 @@ public:
     // Деструктор
     ~HashTable() {
         clear();
+        delete _hashFunction;
     }
 
     // Методы
     bool insert(const int& key, const ValueType& value) {
+        /*if (_size + 1 > _capacity) {
+            std::cerr << "Error: Number of elements exceeds table capacity. Resizing the table or performing rehashing is recommended." << std::endl;
+            return false;
+        }*/
+
         int hash = _hashFunction->computeHash(key, _capacity);
         auto* newNode = new HashNode(key, value);
 
@@ -112,8 +116,18 @@ public:
                 return true;
             }
             current->_next = newNode;
+
+            int i = 0;
+            while (i < _capacity && _table[i] != nullptr)
+                i++;
+
+            if (i >= _capacity)
+                return false;
+
+            _table[i] = newNode;
         }
         _size++;
+        return true;
     }
     bool remove(const int& key) {
         int hash = _hashFunction->computeHash(key, _capacity);
@@ -124,8 +138,15 @@ public:
             if (current->_key == key) {
                 if (previous == nullptr) {
                     _table[hash] = current->_next;
+                    for (int i = 0; i < _capacity; i++)
+                        if (_table[i] == current->_next && i != hash)
+                            _table[i] = _table[i]->_next;
                 } else {
                     previous->_next = current->_next;
+
+                    for (int i = 0; i < _capacity; i++)
+                        if (_table[i]->_key == key)
+                            _table[i] = _table[i]->_next;
                 }
                 delete current;
                 _size--;
@@ -160,7 +181,6 @@ public:
                 //current = current->_next;
             }
             std::cout << std::endl;
-            //}
         }
         std::cout << std::endl;
     }
@@ -168,19 +188,6 @@ public:
         delete _hashFunction;
 
         _hashFunction = hashFunction;
-            case 1:
-                _hashFunction = new HashFunction1();
-                break;
-            case 2:
-                _hashFunction = new HashFunction2();
-                break;
-            case 3:
-                _hashFunction = new HashFunction3();
-                break;
-            default:
-                _hashFunction = new HashFunction1();
-                break;
-        }
 
         rehash();
     }
@@ -232,7 +239,8 @@ public:
                 insert(current->_key, current->_value);
                 HashNode* temp = current;
                 current = current->_next;
-                delete temp;
+                if (current != nullptr)
+                    delete temp;
             }
         }
     }
@@ -262,7 +270,8 @@ private:
             while (current != nullptr) {
                 HashNode* temp = current;
                 current = current->_next;
-                delete temp;
+                if (current != nullptr)
+                    delete temp;
             }
             _table[i] = nullptr;
         }
