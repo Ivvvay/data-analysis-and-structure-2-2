@@ -5,55 +5,62 @@
 #include <cmath>
 
 // Указатель на интерфейс хеш-функции
-class HashFunction {
+class IHashFunction {
 public:
     virtual int computeHash(int key, int tableSize) = 0;
-    virtual ~HashFunction() = default;
+    virtual IHashFunction *clone() const = 0;
+    virtual ~IHashFunction() = default;
 };
 
 // Реализация хеш-функции 1
 // h_i(K) = (h_{i-1}(K) + c*i + d*i^2) mod N; параметры c и d определяются
 // как остаток от деления вашего номера в списке ниже на 5 и 7 соответственно;
-class HashFunction1 : public HashFunction {
+class HashFunction1 : public IHashFunction {
 public:
     int computeHash(int key, int tableSize) override {
-        const int c = 2 % 5;
+        const int c = 3 % 5;
         const int d = 4 % 7;
-        int hash = key % tableSize;
-        for (int i = 1; true; i++) {
-            hash = (hash + c * i + d * i * i) % tableSize;
-            if (hash < tableSize)
+        int i = 1; int hash = key % tableSize;
+
+        return (hash + c * i + d * i * i) % tableSize;
+    }
                 return hash;
         }
+    IHashFunction *clone() const override {
+        return new HashFunction1(*this);
     }
 };
 
 // Реализация хеш-функции 2
 // h_i(K) = [h_{i-1}(K)*a*N] mod N; a = – (1 – √5) / 2, [ ] – целая часть.
-class HashFunction2 : public HashFunction {
+class HashFunction2 : public IHashFunction {
 public:
     int computeHash(int key, int tableSize) override {
         const double a = - (1 - std::sqrt(5.0)) / 2.0;
         int hash = key % tableSize;
-        for (int i = 1; true; i++) {
-            hash = static_cast<int>(hash * a * tableSize) % tableSize;
+
+        return static_cast<int>(hash * a * tableSize) % tableSize;
             if (hash < tableSize)
                 return hash;
-        }
+    }
+    IHashFunction *clone() const override {
+        return new HashFunction2(*this);
     }
 };
 
 // Реализация хеш-функции 3
 // h_i(K)= (K mod N) + i*(1+ K mod (N – 2)) mod N.
-class HashFunction3 : public HashFunction {
+class HashFunction3 : public IHashFunction {
 public:
     int computeHash(int key, int tableSize) override {
-        int hash = key % tableSize;
-        for (int i = 1; true; i++) {
-            hash = (hash + i * (1 + key % (tableSize - 2))) % tableSize;
+        int i = 1; int hash = key % tableSize;
+
+        return (hash + i * (1 + key % (tableSize - 2))) % tableSize;
             if (hash < tableSize)
                 return hash;
-        }
+    }
+    IHashFunction *clone() const override {
+        return new HashFunction3(*this);
     }
 };
 
