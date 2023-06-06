@@ -202,6 +202,22 @@ public:
         return *this;
     }
 
+    ValueType& operator[](const int& key) {
+        int index = _hashFunction->computeHash(key, _capacity);
+        HashNode* current = _table[index];
+
+        while (current != nullptr) {
+            if (current->_key == key)
+                return current->_value;
+            current = current->_next;
+        }
+
+        // Ключ не найден, вставим новый узел с значением
+        insert(key, ValueType());
+
+        return _table[index]->_value;
+    }
+
     void rehash() {
         std::vector<HashNode*> oldTable = _table;
         int oldCapacity = _capacity;
