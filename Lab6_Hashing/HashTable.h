@@ -74,11 +74,11 @@ public:
     // Конструкторы
     HashTable() : HashTable(8) {}
 
-    explicit HashTable(int tableSize) : _size(0), _capacity(tableSize), _hashFunction(new HashFunction1()) {
+    explicit HashTable(int tableSize) : _capacity(tableSize), _hashFunction(new HashFunction1()) {
         _table.resize(_capacity, nullptr);
     }
 
-    HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction->clone()) {
+    HashTable(const HashTable& other) : _capacity(other._capacity), _hashFunction(other._hashFunction->clone()) {
         copyTable(other);
     }
 
@@ -90,11 +90,6 @@ public:
 
     // Методы
     bool insert(const int& key, const ValueType& value) {
-        /*if (_size + 1 > _capacity) {
-            std::cerr << "Error: Number of elements exceeds table capacity. Resizing the table or performing rehashing is recommended." << std::endl;
-            return false;
-        }*/
-
         int hash = _hashFunction->computeHash(key, _capacity);
         auto* newNode = new HashNode(key, value);
 
@@ -126,9 +121,9 @@ public:
 
             _table[i] = newNode;
         }
-        _size++;
         return true;
     }
+
     bool remove(const int& key) {
         int hash = _hashFunction->computeHash(key, _capacity);
         HashNode* current = _table[hash];
@@ -149,7 +144,6 @@ public:
                             _table[i] = _table[i]->_next;
                 }
                 delete current;
-                _size--;
                 return true;
             }
             previous = current;
@@ -186,9 +180,7 @@ public:
     }
     void changeHashFunction(IHashFunction *hashFunction) {
         delete _hashFunction;
-
         _hashFunction = hashFunction;
-
         rehash();
     }
 
@@ -231,7 +223,7 @@ public:
 
         _table.clear();
         _table.resize(_capacity, nullptr);
-        _size = 0;
+
 
         for (int i = 0; i < oldCapacity; i++) {
             HashNode* current = oldTable[i];
@@ -259,7 +251,7 @@ private:
 
     // Приватные члены класса
     std::vector<HashNode*> _table;
-    int _size;
+
     int _capacity;
     IHashFunction* _hashFunction;
 
@@ -275,12 +267,10 @@ private:
             }
             _table[i] = nullptr;
         }
-        _size = 0;
     }
 
     void copyTable(const HashTable& other) {
         _table.resize(other._capacity, nullptr);
-        _size = other._size;
         _capacity = other._capacity;
 
         for (int i = 0; i < other._capacity; i++) {
