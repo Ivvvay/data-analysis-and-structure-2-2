@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 
 // Указатель на интерфейс хеш-функции
 class IHashFunction {
@@ -18,14 +19,15 @@ public:
 class HashFunction1 : public IHashFunction {
 public:
     int computeHash(int key, int tableSize) override {
-        const int c = 3 % 5;
+        const int c = 2 % 5;
         const int d = 4 % 7;
-        int i = 1; int hash = key % tableSize;
-
-        return (hash + c * i + d * i * i) % tableSize;
-    }
+        int hash = key % tableSize;
+        for (int i = 1; true; i++) {
+            hash = (hash + c * i + d * i * i) % tableSize;
+            if (hash < tableSize)
                 return hash;
         }
+    }
     IHashFunction *clone() const override {
         return new HashFunction1(*this);
     }
@@ -38,10 +40,11 @@ public:
     int computeHash(int key, int tableSize) override {
         const double a = - (1 - std::sqrt(5.0)) / 2.0;
         int hash = key % tableSize;
-
-        return static_cast<int>(hash * a * tableSize) % tableSize;
+        for (int i = 1; true; i++) {
+            hash = static_cast<int>(hash * a * tableSize) % tableSize;
             if (hash < tableSize)
                 return hash;
+        }
     }
     IHashFunction *clone() const override {
         return new HashFunction2(*this);
@@ -53,22 +56,23 @@ public:
 class HashFunction3 : public IHashFunction {
 public:
     int computeHash(int key, int tableSize) override {
-        int i = 1; int hash = key % tableSize;
-
-        return (hash + i * (1 + key % (tableSize - 2))) % tableSize;
+        int hash = key % tableSize;
+        for (int i = 1; true; i++) {
+            hash = (hash + i * (1 + key % (tableSize - 2))) % tableSize;
             if (hash < tableSize)
                 return hash;
+        }
     }
     IHashFunction *clone() const override {
         return new HashFunction3(*this);
     }
 };
 
-template <typename KeyType, typename ValueType>
+template <typename ValueType>
 class HashTable {
 public:
     // Конструкторы
-    HashTable() : _size(0), _capacity(8), _hashFunction(new HashFunction1()) {
+    HashTable() : HashTable(8) {}
         _table.resize(_capacity, nullptr);
     }
 
@@ -76,7 +80,7 @@ public:
         _table.resize(_capacity, nullptr);
     }
 
-    HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction) {
+    HashTable(const HashTable& other) : _size(0), _capacity(other._capacity), _hashFunction(other._hashFunction->clone()) {
         copyTable(other);
     }
 
@@ -86,7 +90,7 @@ public:
     }
 
     // Методы
-    void insert(const KeyType& key, const ValueType& value) {
+    bool insert(const int& key, const ValueType& value) {
         int hash = _hashFunction->computeHash(key, _capacity);
         auto* newNode = new HashNode(key, value);
 
@@ -98,20 +102,20 @@ public:
                 if (current->_key == key) {
                     current->_value = value;
                     delete newNode;
-                    return;
+                    return true;
                 }
                 current = current->_next;
             }
             if (current->_key == key) {
                 current->_value = value;
                 delete newNode;
-                return;
+                return true;
             }
             current->_next = newNode;
         }
         _size++;
     }
-    void remove(const KeyType& key) {
+    bool remove(const int& key) {
         int hash = _hashFunction->computeHash(key, _capacity);
         HashNode* current = _table[hash];
         HashNode* previous = nullptr;
@@ -125,14 +129,14 @@ public:
                 }
                 delete current;
                 _size--;
-                return;
+                return true;
             }
             previous = current;
             current = current->_next;
         }
     }
 
-    bool contains(const KeyType& key) const {
+    bool contains(const int& key) const {
         int hash = _hashFunction->computeHash(key, _capacity);
         HashNode* current = _table[hash];
 
@@ -146,23 +150,24 @@ public:
     }
 
     void printTable() const {
+        std::cout << "Hash" << std::setw(18) << "(Key, Value)" << std::setw(30) << "(_table[i], _next)" << std::endl;
         for (int i = 0; i < _capacity; i++) {
-            //if (_table[i] != nullptr) {
-            std::cout << "Hash: " << i << " - ";
+            std::cout << "Hash " << i << ":" << std::setw(4);
             HashNode* current = _table[i];
-            while (current != nullptr) {
-                std::cout << "(" << current->_key << ", " << current->_value << ")";
-                current = current->_next;
+            if (current != nullptr) { // while (current != nullptr)
+                std::cout << "(" << current->_key << ", " << current->_value << ") \t ";
+                std::cout << "(" << current << ", " << current->_next << ") ";
+                //current = current->_next;
             }
             std::cout << std::endl;
             //}
         }
         std::cout << std::endl;
     }
-    void changeHashFunction(int hashFunctionIndex) {
+    void changeHashFunction(IHashFunction *hashFunction) {
         delete _hashFunction;
 
-        switch (hashFunctionIndex) {
+        _hashFunction = hashFunction;
             case 1:
                 _hashFunction = new HashFunction1();
                 break;
@@ -190,7 +195,7 @@ public:
             clear();
             delete _hashFunction;
             _capacity = other._capacity;
-            _hashFunction = other._hashFunction;
+            _hashFunction = other._hashFunction->clone();
             _table.resize(_capacity, nullptr);
             copyTable(other);
         }
@@ -205,7 +210,7 @@ public:
         _table.resize(_capacity, nullptr);
         _size = 0;
 
-        for (size_t i = 0; i < oldCapacity; i++) {
+        for (int i = 0; i < oldCapacity; i++) {
             HashNode* current = oldTable[i];
             while (current != nullptr) {
                 insert(current->_key, current->_value);
@@ -220,11 +225,11 @@ private:
     // Внутренний класс для хранения пар "ключ-значение"
     struct HashNode {
     public:
-        KeyType _key;
+        int _key;
         ValueType _value;
         HashNode* _next;
 
-        HashNode(const KeyType& k, const ValueType& v)
+        HashNode(const int& k, const ValueType& v)
                 : _key(k), _value(v), _next(nullptr) {}
     };
 
@@ -232,7 +237,7 @@ private:
     std::vector<HashNode*> _table;
     int _size;
     int _capacity;
-    HashFunction* _hashFunction;
+    IHashFunction* _hashFunction;
 
     // Вспомогательные методы
     void clear() {
