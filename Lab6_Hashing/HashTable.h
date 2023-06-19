@@ -122,31 +122,46 @@ public:
         return true;
     }
 
-    bool remove(const int& key) {
-        int hash = _hashFunction->computeHash(key, _capacity);
-        HashNode* current = _table[hash];
-        HashNode* previous = nullptr;
+    bool remove(const int key) {
+        if (contains(key)) {
+            int hash = _hashFunction->computeHash(key, _capacity);
+            HashNode* current = _table[hash];
+            HashNode* previous = nullptr;
 
-        while (current != nullptr) {
-            if (current->_key == key) {
-                if (previous == nullptr) {
-                    _table[hash] = current->_next;
-                    for (int i = 0; i < _capacity; i++)
-                        if (_table[i] == current->_next && i != hash)
-                            _table[i] = _table[i]->_next;
-                } else {
-                    previous->_next = current->_next;
+            while (current != nullptr) {
+                if (current->_key == key) {
+                    if (previous == nullptr) {
+                        int currentIndex = findIndex(current);
+                        HashNode* nextCurrent = current->_next;
+                        while (nextCurrent != nullptr) {
+                            int temp = currentIndex;
+                            currentIndex = findIndex(nextCurrent);
+                            _table[temp] = nextCurrent;
+                            nextCurrent = nextCurrent->_next;
+                        }
+                        _table[currentIndex] = _table[currentIndex]->_next;
 
-                    for (int i = 0; i < _capacity; i++)
-                        if (_table[i]->_key == key)
-                            _table[i] = _table[i]->_next;
+                    } else {
+                        previous->_next = current->_next;
+
+                        HashNode* nextCurrent = current->_next;
+                        int currentIndex = findIndex(current);
+                        while (nextCurrent != nullptr) {
+                            int temp = currentIndex;
+                            currentIndex = findIndex(nextCurrent);
+                            _table[temp] = nextCurrent;
+                            nextCurrent = nextCurrent->_next;
+                        }
+                        _table[currentIndex] = _table[currentIndex]->_next;
+                    }
+                    delete current;
+                    return true;
                 }
-                delete current;
-                return true;
+                previous = current;
+                current = current->_next;
             }
-            previous = current;
-            current = current->_next;
-        }
+        } else
+            return false;
     }
 
     bool contains(const int& key) const {
