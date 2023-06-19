@@ -1,9 +1,11 @@
 #ifndef LAB6_HASHING_HASHTABLE_H
 #define LAB6_HASHING_HASHTABLE_H
+
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <iomanip>
+#include <string>
 
 // Указатель на интерфейс хеш-функции
 class IHashFunction {
@@ -89,29 +91,24 @@ public:
     }
 
     // Методы
-    bool insert(const int& key, const ValueType& value) {
+    bool insert(const int key, const ValueType& value) {
         int hash = _hashFunction->computeHash(key, _capacity);
-        auto* newNode = new HashNode(key, value);
 
         if (_table[hash] == nullptr) {
-            _table[hash] = newNode;
+            _table[hash] = new HashNode(key, value);
         } else {
             HashNode* current = _table[hash];
             while (current->_next != nullptr) {
                 if (current->_key == key) {
                     current->_value = value;
-                    delete newNode;
                     return true;
                 }
                 current = current->_next;
             }
             if (current->_key == key) {
                 current->_value = value;
-                delete newNode;
                 return true;
             }
-            current->_next = newNode;
-
             int i = 0;
             while (i < _capacity && _table[i] != nullptr)
                 i++;
@@ -119,7 +116,8 @@ public:
             if (i >= _capacity)
                 return false;
 
-            _table[i] = newNode;
+            _table[i] = new HashNode(key, value);
+            current->_next = _table[i];
         }
         return true;
     }
