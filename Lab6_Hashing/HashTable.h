@@ -277,17 +277,29 @@ private:
 
     void copyTable(const HashTable& other) {
         _table.resize(other._capacity, nullptr);
-        _capacity = other._capacity;
 
         for (int i = 0; i < other._capacity; i++) {
-            HashNode* current = other._table[i];
-            while (current != nullptr) {
-                auto* newNode = new HashNode(current->_key, current->_value);
-                newNode->_next = _table[i];
-                _table[i] = newNode;
-                current = current->_next;
-            }
+            if (other._table[i] != nullptr)
+                insert(other._table[i]->_key, other._table[i]->_value);
         }
+    }
+
+    HashNode* containsGetNode(const int key) {
+        int hash = _hashFunction->computeHash(key, _capacity);
+        HashNode* current = _table[hash];
+
+        while (current != nullptr && current->_key != key) {
+            current = current->_next;
+        }
+        return current;
+    }
+
+    int findIndex(HashNode* elem) const {
+        for (int i = 0; i < _capacity; i++)
+            if (_table[i] == elem) {
+                return i;
+            }
+        return -1;
     }
 };
 
