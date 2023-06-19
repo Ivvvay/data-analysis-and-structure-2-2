@@ -199,9 +199,8 @@ public:
         rehash();
     }
 
-    void resize(int newSize) {
-        _capacity = newSize;
-        rehash();
+    void rehash() {
+        resize(_capacity);
     }
 
     HashTable& operator=(const HashTable& other) {
@@ -231,9 +230,10 @@ public:
         return _table[index]->_value;
     }
 
-    void rehash() {
+    void resize(int capacity) {
         std::vector<HashNode*> oldTable = _table;
         int oldCapacity = _capacity;
+        _capacity = capacity;
 
         _table.clear();
         _table.resize(_capacity, nullptr);
@@ -241,14 +241,10 @@ public:
 
         for (int i = 0; i < oldCapacity; i++) {
             HashNode* current = oldTable[i];
-            while (current != nullptr) {
+            if (current != nullptr)
                 insert(current->_key, current->_value);
-                HashNode* temp = current;
-                current = current->_next;
-                if (current != nullptr)
-                    delete temp;
-            }
         }
+    }
     }
 
 private:
