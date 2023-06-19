@@ -3,4 +3,7 @@ project(Lab6_Hashing)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lab6_Hashing main.cpp HashTable.h)
+add_executable(Lab6_Hashing main.cpp
+        HashTable.h
+        HashTester.cpp
+        HashTester.h)

@@ -1,5 +1,4 @@
-#include <iostream>
-#include "HashTable.h"
+#include "HashTester.h"
 
 IHashFunction *getHashFunction(int hashFunctionIndex) {
     switch (hashFunctionIndex) {
@@ -15,9 +14,15 @@ IHashFunction *getHashFunction(int hashFunctionIndex) {
 }
 
 int main() {
-    /// Тест insert
+    HashTester tester;
+
+    for (int size = 10; size < 200; size += 10)
+        tester.test(size);
+
+    /*/// Тест insert
     std::cout << "Тест insert" << std::endl;
     HashTable<std::string> table;
+
     table.insert(1, "1");
     table.insert(2, "2");
     table.insert(3, "3");
@@ -26,6 +31,10 @@ int main() {
     table.insert(8, "8");
     table.insert(7, "7");
     table.insert(9, "9");
+    table.printTable();
+
+    table.changeHashFunction(getHashFunction(2));
+    table.resize(10);
 
     table.printTable();
 
@@ -66,7 +75,7 @@ int main() {
     table2.printTable();
 
     table.changeHashFunction(getHashFunction(3));
-    table.printTable();
+    table.printTable();*/
 
     return 0;
 }
