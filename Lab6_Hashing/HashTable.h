@@ -164,7 +164,7 @@ public:
             return false;
     }
 
-    bool contains(const int& key) const {
+    bool contains(const int key) const {
         int hash = _hashFunction->computeHash(key, _capacity);
         HashNode* current = _table[hash];
 
@@ -177,20 +177,22 @@ public:
         return false;
     }
 
+
     void printTable() const {
-        std::cout << "Hash" << std::setw(18) << "(Key, Value)" << std::setw(30) << "(_table[i], _next)" << std::endl;
+        std::cout << "Hash" << std::setw(18) << "(Key, Value)" << std::setw(26) << "(_table[i], _next)" << std::endl;
         for (int i = 0; i < _capacity; i++) {
             std::cout << "Hash " << i << ":" << std::setw(4);
             HashNode* current = _table[i];
             if (current != nullptr) { // while (current != nullptr)
-                std::cout << "(" << current->_key << ", " << current->_value << ") \t ";
-                std::cout << "(" << current << ", " << current->_next << ") ";
+                std::cout << std::setw(4) << "(" << current->_key << ", " << current->_value << ")";
+                std::cout << std::setw(9) << "(" << current << ", " << current->_next << ") ";
                 //current = current->_next;
             }
             std::cout << std::endl;
         }
         std::cout << std::endl;
     }
+
     void changeHashFunction(IHashFunction *hashFunction) {
         delete _hashFunction;
         _hashFunction = hashFunction;
@@ -224,7 +226,6 @@ public:
             current = current->_next;
         }
 
-        // Ключ не найден, вставим новый узел с значением
         insert(key, ValueType());
 
         return _table[index]->_value;
