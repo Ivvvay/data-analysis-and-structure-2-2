@@ -245,6 +245,9 @@ public:
                 insert(current->_key, current->_value);
         }
     }
+
+    int getCapacity() {
+        return _capacity;
     }
 
 private:
@@ -255,26 +258,19 @@ private:
         ValueType _value;
         HashNode* _next;
 
-        HashNode(const int& k, const ValueType& v)
+        HashNode(const int k, const ValueType& v)
                 : _key(k), _value(v), _next(nullptr) {}
     };
 
     // Приватные члены класса
     std::vector<HashNode*> _table;
-
     int _capacity;
     IHashFunction* _hashFunction;
 
     // Вспомогательные методы
     void clear() {
         for (int i = 0; i < _capacity; i++) {
-            HashNode* current = _table[i];
-            while (current != nullptr) {
-                HashNode* temp = current;
-                current = current->_next;
-                if (current != nullptr)
-                    delete temp;
-            }
+            delete _table[i];
             _table[i] = nullptr;
         }
     }
