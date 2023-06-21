@@ -284,16 +284,6 @@ private:
         }
     }
 
-    HashNode* containsGetNode(const int key) {
-        int hash = _hashFunction->computeHash(key, _capacity);
-        HashNode* current = _table[hash];
-
-        while (current != nullptr && current->_key != key) {
-            current = current->_next;
-        }
-        return current;
-    }
-
     int findIndex(HashNode* elem) const {
         for (int i = 0; i < _capacity; i++)
             if (_table[i] == elem) {
