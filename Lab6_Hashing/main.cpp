@@ -22,7 +22,7 @@ int main() {
     /*/// Тест insert
     std::cout << "Тест insert" << std::endl;
     HashTable<std::string> table;
-
+    table.changeHashFunction(getHashFunction(2));
     table.insert(1, "1");
     table.insert(2, "2");
     table.insert(3, "3");
@@ -33,10 +33,6 @@ int main() {
     table.insert(9, "9");
     table.printTable();
 
-    table.changeHashFunction(getHashFunction(2));
-    table.resize(10);
-
-    table.printTable();
 
     /// Тест метода contains
     assert(table.contains(1));
@@ -57,7 +53,6 @@ int main() {
     std::cout << "Тест метода changeHashFunction" << std::endl;
     table.changeHashFunction(getHashFunction(2));
     table.printTable();
-
 
     /// Тест метода resize
     std::cout << "Тест метода resize" << std::endl;

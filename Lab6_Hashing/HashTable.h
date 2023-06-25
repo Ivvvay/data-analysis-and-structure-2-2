@@ -164,19 +164,10 @@ public:
             return false;
     }
 
-    bool contains(const int key) const {
-        int hash = _hashFunction->computeHash(key, _capacity);
-        HashNode* current = _table[hash];
-
-        while (current != nullptr) {
-            if (current->_key == key) {
-                return true;
-            }
-            current = current->_next;
-        }
-        return false;
+    bool contains(const int key) {
+        HashNode* node = containsGetNode(key);
+        return (node != nullptr);
     }
-
 
     void printTable() const {
         std::cout << "Hash" << std::setw(18) << "(Key, Value)" << std::setw(26) << "(_table[i], _next)" << std::endl;
