@@ -271,6 +271,7 @@ private:
         }
     }
 
+<<<<<<< HEAD
     void getNodeAndParent(const int key, HashNode*& node, HashNode*& parent) {
         int hash = _hashFunction->computeHash(key, _capacity);
         node = _table[hash];
@@ -292,6 +293,8 @@ private:
         return current;
     }
 
+=======
+>>>>>>> Lab6
     int findIndex(HashNode* elem) const {
         for (int i = 0; i < _capacity; i++)
             if (_table[i] == elem) {
