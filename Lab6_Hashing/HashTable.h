@@ -123,45 +123,41 @@ public:
     }
 
     bool remove(const int key) {
-        if (contains(key)) {
-            int hash = _hashFunction->computeHash(key, _capacity);
-            HashNode* current = _table[hash];
-            HashNode* previous = nullptr;
+        HashNode* node = nullptr;
+        HashNode* parent = nullptr;
+        getNodeAndParent(key, node, parent);
 
-            while (current != nullptr) {
-                if (current->_key == key) {
-                    if (previous == nullptr) {
-                        int currentIndex = findIndex(current);
-                        HashNode* nextCurrent = current->_next;
-                        while (nextCurrent != nullptr) {
-                            int temp = currentIndex;
-                            currentIndex = findIndex(nextCurrent);
-                            _table[temp] = nextCurrent;
-                            nextCurrent = nextCurrent->_next;
-                        }
-                        _table[currentIndex] = _table[currentIndex]->_next;
-
-                    } else {
-                        previous->_next = current->_next;
-
-                        HashNode* nextCurrent = current->_next;
-                        int currentIndex = findIndex(current);
-                        while (nextCurrent != nullptr) {
-                            int temp = currentIndex;
-                            currentIndex = findIndex(nextCurrent);
-                            _table[temp] = nextCurrent;
-                            nextCurrent = nextCurrent->_next;
-                        }
-                        _table[currentIndex] = _table[currentIndex]->_next;
-                    }
-                    delete current;
-                    return true;
-                }
-                previous = current;
-                current = current->_next;
-            }
-        } else
+        if (node == nullptr) {
             return false;
+        }
+
+        if (parent == nullptr) {
+            int currentIndex = findIndex(node);
+
+            HashNode* nextCurrent = node->_next;
+            while (nextCurrent != nullptr) {
+                int temp = currentIndex;
+                currentIndex = findIndex(nextCurrent);
+                _table[temp] = nextCurrent;
+                nextCurrent = nextCurrent->_next;
+            }
+            _table[currentIndex] = _table[currentIndex]->_next;
+        } else {
+            parent->_next = node->_next;
+
+            HashNode* nextCurrent = node->_next;
+            int currentIndex = findIndex(node);
+            while (nextCurrent != nullptr) {
+                int temp = currentIndex;
+                currentIndex = findIndex(nextCurrent);
+                _table[temp] = nextCurrent;
+                nextCurrent = nextCurrent->_next;
+            }
+            _table[currentIndex] = _table[currentIndex]->_next;
+        }
+
+        delete node;
+        return true;
     }
 
     bool contains(const int key) {
@@ -272,6 +268,17 @@ private:
         for (int i = 0; i < other._capacity; i++) {
             if (other._table[i] != nullptr)
                 insert(other._table[i]->_key, other._table[i]->_value);
+        }
+    }
+
+    void getNodeAndParent(const int key, HashNode*& node, HashNode*& parent) {
+        int hash = _hashFunction->computeHash(key, _capacity);
+        node = _table[hash];
+        parent = nullptr;
+
+        while (node != nullptr && node->_key != key) {
+            parent = node;
+            node = node->_next;
         }
     }
 
